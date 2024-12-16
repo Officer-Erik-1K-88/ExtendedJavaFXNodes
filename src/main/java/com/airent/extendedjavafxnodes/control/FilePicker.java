@@ -12,12 +12,14 @@ import javafx.css.FontCssMetaData;
 import javafx.css.StyleOrigin;
 import javafx.css.Styleable;
 import javafx.css.StyleableBooleanProperty;
+import javafx.css.StyleableDoubleProperty;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
 import javafx.css.StyleableStringProperty;
 import javafx.css.converter.BooleanConverter;
 import javafx.css.converter.EnumConverter;
 import javafx.css.converter.PaintConverter;
+import javafx.css.converter.SizeConverter;
 import javafx.css.converter.StringConverter;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -29,6 +31,7 @@ import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -233,15 +236,39 @@ public class FilePicker extends Control {
      *                                                                         *
      **************************************************************************/
 
-    private final DoubleProperty spacing = new SimpleDoubleProperty(this, "spacing", 1);
-    public DoubleProperty spacingProperty() {
+    private DoubleProperty spacing;
+    public final DoubleProperty spacingProperty() {
+        if (spacing == null) {
+            spacing = new StyleableDoubleProperty() {
+                @Override
+                public void invalidated() {
+                    requestLayout();
+                }
+
+                @Override
+                public Object getBean() {
+                    return FilePicker.this;
+                }
+
+                @Override
+                public String getName() {
+                    return "spacing";
+                }
+
+                @Override
+                public CssMetaData<FilePicker, Number> getCssMetaData() {
+                    return StyleableProperties.SPACING;
+                }
+            };
+        }
         return spacing;
     }
     public double getSpacing() {
+        if (spacing == null) return 1;
         return spacing.get();
     }
     public void setSpacing(double spacing) {
-        this.spacing.set(spacing);
+        spacingProperty().set(spacing);
     }
 
     private final BooleanProperty directoryPicker = new SimpleBooleanProperty(this, "directoryPicker", false);
@@ -669,16 +696,33 @@ public class FilePicker extends Control {
             }
         };
 
+        private static final CssMetaData<FilePicker,Number> SPACING =
+                new CssMetaData<>("-fx-spacing",
+                        SizeConverter.getInstance(), 1d) {
+
+                    @Override
+                    public boolean isSettable(FilePicker node) {
+                        return node.spacing == null || !node.spacing.isBound();
+                    }
+
+                    @Override
+                    public StyleableProperty<Number> getStyleableProperty(FilePicker node) {
+                        return (StyleableProperty<Number>)node.spacingProperty();
+                    }
+                };
+
         private static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables =
                 new ArrayList<>(Control.getClassCssMetaData());
-            Collections.addAll(styleables,
-                FONT,
-                TEXT_FILL,
-                TEXT_OVERRUN,
-                ELLIPSIS_STRING,
-                WRAP_TEXT
+            Collections.addAll(
+                    styleables,
+                    FONT,
+                    TEXT_FILL,
+                    TEXT_OVERRUN,
+                    ELLIPSIS_STRING,
+                    WRAP_TEXT,
+                    SPACING
             );
             STYLEABLES = Collections.unmodifiableList(styleables);
         }
