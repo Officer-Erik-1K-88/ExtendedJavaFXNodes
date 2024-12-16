@@ -48,7 +48,7 @@ public class Dialog<R> implements EventTarget {
      * JavaFX Dialog object.
      */
     public Dialog() {
-        master = new javafx.scene.control.Dialog<>();
+        this(new javafx.scene.control.Dialog<>());
     }
 
     /**

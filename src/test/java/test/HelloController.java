@@ -1,4 +1,4 @@
-package com.airent.extendedjavafxnodes;
+package test;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

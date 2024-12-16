@@ -122,7 +122,7 @@ public class FilePicker extends Control {
         }
     }
 
-    private Label createFileLabel(File file) {
+    private @NotNull Label createFileLabel(@NotNull File file) {
         Label label = new Label(file.getAbsolutePath());
         // TODO: Add label formatting
         return label;
@@ -594,12 +594,12 @@ public class FilePicker extends Control {
             new FontCssMetaData<>("-fx-font", Font.getDefault()) {
 
             @Override
-            public boolean isSettable(FilePicker n) {
+            public boolean isSettable(@NotNull FilePicker n) {
                 return n.font == null || !n.font.isBound();
             }
 
             @Override
-            public StyleableProperty<Font> getStyleableProperty(FilePicker n) {
+            public StyleableProperty<Font> getStyleableProperty(@NotNull FilePicker n) {
                 return (StyleableProperty<Font>)(WritableValue<Font>)n.fontProperty();
             }
         };
@@ -609,12 +609,12 @@ public class FilePicker extends Control {
                 PaintConverter.getInstance(), Color.BLACK) {
 
             @Override
-            public boolean isSettable(FilePicker n) {
+            public boolean isSettable(@NotNull FilePicker n) {
                 return n.textFill == null || !n.textFill.isBound();
             }
 
             @Override
-            public StyleableProperty<Paint> getStyleableProperty(FilePicker n) {
+            public StyleableProperty<Paint> getStyleableProperty(@NotNull FilePicker n) {
                 return (StyleableProperty<Paint>)(WritableValue<Paint>)n.textFillProperty();
             }
         };
@@ -625,12 +625,12 @@ public class FilePicker extends Control {
                 OverrunStyle.ELLIPSIS) {
 
             @Override
-            public boolean isSettable(FilePicker n) {
+            public boolean isSettable(@NotNull FilePicker n) {
                 return n.textOverrun == null || !n.textOverrun.isBound();
             }
 
             @Override
-            public StyleableProperty<OverrunStyle> getStyleableProperty(FilePicker n) {
+            public StyleableProperty<OverrunStyle> getStyleableProperty(@NotNull FilePicker n) {
                 return (StyleableProperty<OverrunStyle>)(WritableValue<OverrunStyle>)n.textOverrunProperty();
             }
         };
@@ -639,11 +639,11 @@ public class FilePicker extends Control {
                 new CssMetaData<>("-fx-ellipsis-string",
                 StringConverter.getInstance(), DEFAULT_ELLIPSIS_STRING) {
 
-            @Override public boolean isSettable(FilePicker n) {
+            @Override public boolean isSettable(@NotNull FilePicker n) {
                 return n.ellipsisString == null || !n.ellipsisString.isBound();
             }
 
-            @Override public StyleableProperty<String> getStyleableProperty(FilePicker n) {
+            @Override public StyleableProperty<String> getStyleableProperty(@NotNull FilePicker n) {
                 return (StyleableProperty<String>)n.ellipsisStringProperty();
             }
         };
@@ -653,12 +653,12 @@ public class FilePicker extends Control {
                 BooleanConverter.getInstance(), false) {
 
             @Override
-            public boolean isSettable(FilePicker n) {
+            public boolean isSettable(@NotNull FilePicker n) {
                 return n.wrapText == null || !n.wrapText.isBound();
             }
 
             @Override
-            public StyleableProperty<Boolean> getStyleableProperty(FilePicker n) {
+            public StyleableProperty<Boolean> getStyleableProperty(@NotNull FilePicker n) {
                 return (StyleableProperty<Boolean>)n.wrapTextProperty();
             }
         };

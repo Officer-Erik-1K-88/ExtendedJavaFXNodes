@@ -15,6 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,7 +54,7 @@ public class Alert extends Dialog<ButtonType> {
                 "An undefined action was executed.");
     }
 
-    public Alert(AlertType alertType) {
+    public Alert(@NotNull AlertType alertType) {
         super(new javafx.scene.control.Alert(alertType.convert()));
         setAlertType(alertType);
         init(alertType.name()+" Action Declared!",
@@ -60,19 +62,19 @@ public class Alert extends Dialog<ButtonType> {
                 "An empty construct of the `AlertType` \""+alertType.name()+"\" was called.");
     }
 
-    public Alert(AlertType alertType, String contentText, ButtonType... buttonTypes) {
+    public Alert(@NotNull AlertType alertType, String contentText, ButtonType... buttonTypes) {
         super(new javafx.scene.control.Alert(alertType.convert(), contentText, buttonTypes));
         setAlertType(alertType);
         init(getTitle(), getHeaderText(), getContentText());
     }
 
-    public Alert(AlertType alertType, String title, String header, String body) {
+    public Alert(@NotNull AlertType alertType, String title, String header, String body) {
         super(new javafx.scene.control.Alert(alertType.convert()));
         setAlertType(alertType);
         init(title, header, body);
     }
 
-    public Alert(AlertType alertType, String title, String header) {
+    public Alert(@NotNull AlertType alertType, String title, String header) {
         super(new javafx.scene.control.Alert(alertType.convert()));
         setAlertType(alertType);
         init(title, header, null);
@@ -145,7 +147,7 @@ public class Alert extends Dialog<ButtonType> {
         }
     }
 
-    private void initNodes(Pane parent, BiFunction<Pair<Integer, Label>, Pane, Double> labelFunction) {
+    private void initNodes(@NotNull Pane parent, BiFunction<Pair<Integer, Label>, Pane, Double> labelFunction) {
         ObservableList<Node> children = parent.getChildren();
         for(int i=0; i<children.size(); i++) {
             Node node = children.get(i);
@@ -168,7 +170,7 @@ public class Alert extends Dialog<ButtonType> {
      *
      * @return The text provided to a {@link AlertType#PROMPT} on confirmation.
      */
-    public final String showAndCollect() {
+    public final @Nullable String showAndCollect() {
         Optional<ButtonType> buttonType = this.showAndWait();
         try {
             boolean good = buttonType.isPresent() && buttonType.get().equals(ButtonType.OK);
@@ -384,7 +386,7 @@ public class Alert extends Dialog<ButtonType> {
         new Alert(AlertType.ERROR, title).showAndWait();
     }
 
-    private static double setRequiredHeight(Label label, Pane parent, double increase) {
+    private static double setRequiredHeight(@NotNull Label label, @NotNull Pane parent, double increase) {
         label.setWrapText(true);
         Text text = new Text(label.getText());
         text.setFont(label.getFont());

@@ -6,8 +6,9 @@
 
     <groupId>com.airent</groupId>
     <artifactId>ExtendedJavaFXNodes</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>ExtendedJavaFXNodes</name>
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,17 +64,11 @@
                 <version>0.0.8</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
-                        <id>default-cli</id>
+                        <!-- Test configuration for running with: mvn test -->
+                        <id>test-cli</id>
                         <configuration>
-                            <mainClass>com.airent.extendedjavafxnodes/com.airent.extendedjavafxnodes.HelloApplication
-                            </mainClass>
+                            <mainClass>test.HelloApplication</mainClass>
                             <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
                         </configuration>
                     </execution>
                 </executions>
