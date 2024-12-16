@@ -37,6 +37,7 @@ public class FilePickerSkin extends SkinBase<FilePicker> {
             this.button = button;
 
             getChildren().addAll(listView, button);
+            setPrefSize(340, 30);
         }
 
         @Override
@@ -48,7 +49,8 @@ public class FilePickerSkin extends SkinBase<FilePicker> {
             double buttonHeight = button.prefHeight(-1); // Height of the button
             double listViewHeight = Math.min(buttonHeight + addedHeight, height); // Ensure ListView is 4 pixels taller than the Button
 
-            double listViewWidth = width >= sbsWidth ? listView.prefWidth(listViewHeight) : width; // Adjust width when compact
+            double buttonWidth = button.prefWidth(buttonHeight); // Button's preferred width for its height
+            double listViewWidth = width >= sbsWidth ? (width-buttonWidth)-gap : width; // Adjust width when compact
 
             // Position the ListView
             listView.resizeRelocate(0, 0, listViewWidth, listViewHeight);
@@ -66,7 +68,6 @@ public class FilePickerSkin extends SkinBase<FilePicker> {
                 }
             } else {
                 // Layout side by side when width >= 200
-                double buttonWidth = button.prefWidth(buttonHeight); // Button's preferred width for its height
 
                 // Calculate vertical alignment
                 double buttonTop = (listViewHeight - buttonHeight) / 2; // Center the button vertically within the ListView
@@ -77,7 +78,9 @@ public class FilePickerSkin extends SkinBase<FilePicker> {
 
         @Override
         protected double computePrefWidth(double height) {
-            return listView.prefWidth(height) + gap + button.prefWidth(height);
+            double buttonWidth = button.prefWidth(height);
+            double width = getWidth();
+            return ((width-buttonWidth)-gap) + gap + buttonWidth;
         }
 
         @Override
