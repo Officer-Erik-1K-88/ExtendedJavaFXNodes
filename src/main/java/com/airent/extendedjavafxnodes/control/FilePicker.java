@@ -1,8 +1,10 @@
 package com.airent.extendedjavafxnodes.control;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.WritableValue;
 import javafx.css.CssMetaData;
@@ -26,6 +28,7 @@ import javafx.scene.control.OverrunStyle;
 
 import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -230,6 +233,17 @@ public class FilePicker extends Control {
      *                                                                         *
      **************************************************************************/
 
+    private final DoubleProperty spacing = new SimpleDoubleProperty(this, "spacing", 1);
+    public DoubleProperty spacingProperty() {
+        return spacing;
+    }
+    public double getSpacing() {
+        return spacing.get();
+    }
+    public void setSpacing(double spacing) {
+        this.spacing.set(spacing);
+    }
+
     private final BooleanProperty directoryPicker = new SimpleBooleanProperty(this, "directoryPicker", false);
 
     public final BooleanProperty directoryPickerProperty() {
@@ -242,14 +256,6 @@ public class FilePicker extends Control {
 
     public final void setDirectoryPicker(boolean directoryPicker) {
         this.directoryPicker.set(directoryPicker);
-    }
-
-    public final boolean isFilePicker() {
-        return !directoryPicker.get();
-    }
-
-    public final void setFilePicker(boolean filePicker) {
-        this.directoryPicker.set(!filePicker);
     }
 
     private final BooleanProperty multiselect = new SimpleBooleanProperty(this, "multiselect", false);
