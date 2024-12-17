@@ -2,6 +2,7 @@ package com.airent.extendedjavafxnodes.control;
 
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -10,7 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
@@ -21,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 /**
@@ -81,14 +85,29 @@ public class Alert extends Dialog<ButtonType> {
     }
 
     /**
-     * Initializes this {@code Alert} container.
+     * Initializes this {@code Alert} container with the graphic
+     * set to that of the default stored image of the {@link AlertType}.
+     *
      * @param title The title of this {@code Alert}.
      * @param header The header of this {@code Alert}.
      * @param body The body content of this {@code Alert}.
      */
-    protected void init(String title, String header, String body) {
-        if (getAlertType() != AlertType.NONE) {
-            ImageView imageView = new ImageView(getAlertType().getImage());
+    protected final void init(String title, String header, String body) {
+        Image image = getAlertType().getImage();
+        init(title, header, body, image);
+    }
+
+    /**
+     * Initializes this {@code Alert} container.
+     *
+     * @param title The title of this {@code Alert}.
+     * @param header The header of this {@code Alert}.
+     * @param body The body content of this {@code Alert}.
+     * @param image The image to use as the graphic of this {@code Alert}.
+     */
+    protected void init(String title, String header, String body, Image image) {
+        if (image != null) {
+            ImageView imageView = new ImageView(image);
             setGraphic(imageView);
         }
         if (title == null) {
@@ -124,41 +143,28 @@ public class Alert extends Dialog<ButtonType> {
             }
         }
 
-        AtomicInteger placementIndex = new AtomicInteger();
-        AtomicReference<Double> placementY = new AtomicReference<>((double) 0);
-        initNodes(this.getDialogPane(), ((labelPair, pane) -> {
-            Label label = labelPair.getValue();
-            placementIndex.set(labelPair.getKey());
-            double requiredHeight;
-            if (pane.equals(this.getDialogPane()) && input != null) {
-                requiredHeight = setRequiredHeight(label, pane, input.getPrefHeight()+20);
-            } else {
-                requiredHeight = setRequiredHeight(label, pane);
+        ObservableList<Node> children = getDialogPane().getChildren();
+        int placementIndex = 0;
+        double placementY = 0;
+        for(int i=0; i<children.size(); i++) {
+            Node node = children.get(i);
+            if (node instanceof Label label) {
+                label.setFont(FONT);
+                placementIndex = i;
+                double requiredHeight;
+                if (input != null) {
+                    requiredHeight = setRequiredHeight(label, getDialogPane(), input.getPrefHeight()+20);
+                } else {
+                    requiredHeight = setRequiredHeight(label, getDialogPane());
+                }
+                placementY += requiredHeight;
             }
-            placementY.set(placementY.get()+requiredHeight);
-            return requiredHeight;
-        }));
+        }
         if (input != null) {
             input.autosize();
             input.setLayoutX(PADDING);
-            input.setLayoutY(placementY.get()+input.getHeight()+PADDING);
-
-            this.getDialogPane().getChildren().add(placementIndex.get()+1, input);
-        }
-    }
-
-    private void initNodes(@NotNull Pane parent, BiFunction<Pair<Integer, Label>, Pane, Double> labelFunction) {
-        ObservableList<Node> children = parent.getChildren();
-        for(int i=0; i<children.size(); i++) {
-            Node node = children.get(i);
-            if (node instanceof Pane pane) {
-                initNodes(pane, labelFunction);
-            } else if (node instanceof Label label) {
-                label.setFont(FONT);
-                double requiredHeight = labelFunction.apply(new Pair<>(i, label), parent);
-                label.setMinHeight(requiredHeight);
-                label.setPrefHeight(requiredHeight);
-            }
+            input.setLayoutY(placementY+input.getHeight()+PADDING+6);
+            getDialogPane().getChildren().add(placementIndex+1, input);
         }
     }
 
@@ -189,8 +195,8 @@ public class Alert extends Dialog<ButtonType> {
      * This method can only be used with validate and confirmation
      * AlertTypes.
      * 
-     * @param action The action to exicute if user selected OK.
-     * @return Whether the action was exicuted.
+     * @param action The action to execute if user selected OK.
+     * @return Whether the action was executed.
      */
     public final boolean showAndCollect(Runnable action) {
         boolean good;
@@ -256,18 +262,18 @@ public class Alert extends Dialog<ButtonType> {
      * Gets the input of this Alert,
      * given this Alert has an AlertType of prompt.
      * 
-     * @return The TextField of an prompt AlertType.
+     * @return The TextField of a prompt AlertType.
      */
     public final TextField getInput() {
         return input;
     }
 
     /**
-     * Asks the user to validate an action for exicution.
+     * Asks the user to validate an action for execution.
      * 
      * @param actionName The name of the action to validate.
      * @param action The action to preform on validation.
-     * @return
+     * @return Whether the action was executed.
      */
     public static boolean validateAction(String actionName, Runnable action) {
         Alert confirm = new Alert(AlertType.VALIDATE,
@@ -286,44 +292,15 @@ public class Alert extends Dialog<ButtonType> {
      * @return The user input.
      */
     public static String textAlert(String title, String header, String body) {
-        Alert confirm = new Alert(AlertType.CONFIRMATION);
+        Alert confirm = new Alert(AlertType.PROMPT);
         confirm.setTitle(title);
         confirm.setHeaderText(header);
         confirm.setContentText(body);
-        TextField input = new TextField();
-        input.setMinHeight(26);
-        input.setPrefHeight(26);
-        input.setMaxHeight(26);
-        input.setMinWidth(200);
-        input.setPrefWidth(200);
-        //input.setMaxWidth(200);
-
-        ObservableList<Node> children = confirm.getDialogPane().getChildren();
-        int placementIndex = 0;
-        double placementY = 0;
-        for(int i=0; i<children.size(); i++) {
-            Node node = children.get(i);
-            //System.out.println(node.getClass().getName());
-            //System.out.println(node.getTypeSelector());
-            if (node instanceof Label label) {
-                placementIndex = i;
-                double requiredHeight = setRequiredHeight(label, confirm.getDialogPane(), input.getPrefHeight()+20);
-                label.setMinHeight(requiredHeight);
-                label.setPrefHeight(requiredHeight);
-                placementY += requiredHeight;
-            }
-        }
-
-        input.autosize();
-        input.setLayoutX(PADDING);
-        input.setLayoutY(placementY+input.getHeight()+PADDING);
-
-        confirm.getDialogPane().getChildren().add(placementIndex+1, input);
 
         Optional<ButtonType> buttonType = confirm.showAndWait();
         boolean good = buttonType.isPresent() && buttonType.get().equals(ButtonType.OK);
         if (good) {
-            return input.getText();
+            return confirm.getInput().getText();
         } else {
             return "";
         }
@@ -467,13 +444,23 @@ public class Alert extends Dialog<ButtonType> {
         ERROR("Alert.Error.png");
 
         private javafx.scene.control.Alert.AlertType equivalent;
-        private final Image image;
+        private final ObjectProperty<Image> image = new ObjectPropertyBase<Image>() {
+            @Override
+            public Object getBean() {
+                return this;
+            }
+
+            @Override
+            public String getName() {
+                return "image";
+            }
+        };
         private final double iHeight = 60;
         private final double iWidth = 60;
         private boolean original;
 
         AlertType() {
-            image = null;
+            image.set(null);
             try {
                 equivalent = javafx.scene.control.Alert.AlertType.valueOf(this.name());
                 original = true;
@@ -484,12 +471,12 @@ public class Alert extends Dialog<ButtonType> {
         }
 
         AlertType(String imgPath) {
-            image = new Image(
+            image.set(new Image(
                     Objects.requireNonNull(Alert.class.getResource(imgPath)).toExternalForm(),
                     iWidth,
                     iHeight,
                     true,
-                    true);
+                    true));
             try {
                 equivalent = javafx.scene.control.Alert.AlertType.valueOf(this.name());
                 original = true;
@@ -500,18 +487,18 @@ public class Alert extends Dialog<ButtonType> {
         }
 
         AlertType(javafx.scene.control.Alert.AlertType equivalent) {
-            image = null;
+            image.set(null);
             this.equivalent = equivalent;
             original = false;
         }
 
         AlertType(javafx.scene.control.Alert.AlertType equivalent, String imgPath) {
-            image = new Image(
+            image.set(new Image(
                     Objects.requireNonNull(Alert.class.getResource(imgPath)).toExternalForm(),
                     iWidth,
                     iHeight,
                     true,
-                    true);
+                    true));
             this.equivalent = equivalent;
             original = false;
         }
@@ -532,6 +519,17 @@ public class Alert extends Dialog<ButtonType> {
         }
 
         /**
+         * Gets the property that stores the image of this AlertType.
+         * <br>
+         * This exists only to allow for image changing of AlertTypes.
+         *
+         * @return The {@link ObjectProperty} that stores the image.
+         */
+        public ObjectProperty<Image> imageProperty() {
+            return image;
+        }
+
+        /**
          * Gets the image that will be displayed
          * with an Alert message as the Alert box's
          * icon.
@@ -539,7 +537,7 @@ public class Alert extends Dialog<ButtonType> {
          * @return The image that is linked to the AlertType.
          */
         public Image getImage() {
-            return image;
+            return image.get();
         }
 
         /**

@@ -28,7 +28,9 @@ public class HelloApplication extends Application {
             tutorialContent.addSlide("Page 1", null, HelloApplication.class.getResource("Page1.xml"), new Light());
             vBox.getChildren().addAll(filePicker, tutorialContent);
         }
-        //Alert.showAlert("Test", "This is a Test.");
+        Alert.textAlert("Test", "This is a test.", "Looking at the body text here.");
+        Alert alert = new Alert(Alert.AlertType.PROMPT, "Test", "This is a Test.", "test test test test test test test test test test.");
+        alert.show();
         stage.show();
     }
 
