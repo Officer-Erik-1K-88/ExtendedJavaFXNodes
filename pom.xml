@@ -7,7 +7,7 @@
 
     <groupId>com.airent</groupId>
     <artifactId>ExtendedJavaFXNodes</artifactId>
-    <version>0.1.1</version>
+    <version>0.4.0</version>
     <name>Extended JavaFX Nodes</name>
     <description>Some JavaFX Nodes to enhance experience and usability in many situations.</description>
     <url>https://github.com/Officer-Erik-1K-88/ExtendedJavaFXNodes</url>
