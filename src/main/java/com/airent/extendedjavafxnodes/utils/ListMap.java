@@ -141,6 +141,13 @@ public class ListMap<K, V> extends AbstractMap<K, V> implements SequencedMap<K, 
         return map.containsValue(value);
     }
 
+    public K getKey(int index) {
+        return keys.get(index);
+    }
+    public V getValue(int index) {
+        return values.get(index);
+    }
+
     @Override
     public V get(Object key) {
         if (subMap) {
