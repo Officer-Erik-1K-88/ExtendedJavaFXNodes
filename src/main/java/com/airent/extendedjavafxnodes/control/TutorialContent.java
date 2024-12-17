@@ -1,24 +1,19 @@
 package com.airent.extendedjavafxnodes.control;
 
-import com.airent.extendedjavafxnodes.themes.Theme;
+import com.airent.extendedjavafxnodes.gaxml.Formatter;
+import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.utils.ListMap;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.TextFlow;
 
 public class TutorialContent extends VBox {
     private ImageView imageView;
-    private TextFlow textFlow;
+    private VBox textContent;
     private Button next;
     private Button previous;
     private Label flowCounter;
@@ -30,14 +25,14 @@ public class TutorialContent extends VBox {
     public TutorialContent() {
         super();
         imageView = new ImageView();
-        textFlow = new TextFlow();
+        textContent = new VBox();
         previous = new Button("Previous");
         previous.setDisable(true);
         flowCounter = new Label("0 / 0");
         next = new Button("Next");
         next.setDisable(true);
         HBox hBox = new HBox(previous, flowCounter, next);
-        getChildren().addAll(imageView, textFlow, hBox);
+        getChildren().addAll(imageView, textContent, hBox);
     }
 
     public final void addSlide(String title, Image image, String description, Theme theme) {
@@ -65,10 +60,15 @@ public class TutorialContent extends VBox {
     public final void updateContent() {
         if (info.isEmpty()) {
             imageView.setImage(null);
-            textFlow.getChildren().clear();
+            textContent.getChildren().clear();
         } else {
             TutorialInfo tutorialInfo = info.getValue(current);
             imageView.setImage(tutorialInfo.getImage());
+            Formatter formatter = new Formatter(tutorialInfo.getTheme());
+            String[] paras = tutorialInfo.getDescription().split("\n");
+            for (String para : paras) {
+
+            }
         }
         updateFlowCounter();
     }

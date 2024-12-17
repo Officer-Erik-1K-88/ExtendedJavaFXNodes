@@ -1,7 +1,6 @@
-package com.airent.extendedjavafxnodes.text;
+package com.airent.extendedjavafxnodes.gaxml;
 
-import com.airent.extendedjavafxnodes.themes.Theme;
-import com.airent.extendedjavafxnodes.utils.Action;
+import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
@@ -34,9 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.airent.extendedjavafxnodes.gaxml.XMLProcessor.onClick;
+
 public class Formatter {
     private final List<Node> textList = new ArrayList<>();
-    private final Attributes baseFormat = new Attributes();
+    private final Attributes baseFormat = new Attributes((org.w3c.dom.Node) null);
     private final Theme theme;
 
     public Formatter(Theme theme) {
@@ -123,7 +124,7 @@ public class Formatter {
         format = getBaseFormat(format);
         Node newNode;
         // font
-        Double fontSize = 12.0;
+        double fontSize = 12.0;
         String fontType = null;
         if (format.containsKey("size")) {
             fontSize = Double.parseDouble(format.get("size"));
@@ -133,7 +134,7 @@ public class Formatter {
         }
         Text tNode = new Text(message);
         if (fontType == null) {
-            tNode.setFont(new Font(fontSize));
+            tNode.setFont(new javafx.scene.text.Font(fontSize));
         } else {
             tNode.setFont(new Font(fontType, fontSize));
         }
@@ -154,8 +155,11 @@ public class Formatter {
     private Hyperlink getHyperlink(Text tNode, @NotNull Attributes format) {
         Hyperlink hyperlink = new Hyperlink("", tNode);
         String path = format.get("href");
-        Action.onClick(hyperlink, event -> {
-            if (path.startsWith("http")) {
+        onClick(hyperlink, event -> {
+            if (path.startsWith("goesTo:")) {
+                System.out.println("To Be Implemented Later.");
+                //((StoryPage) Page.getPage("StoryPage")).display(path.replace("goesTo:",""));
+            } else if (path.startsWith("http")) {
                 try {
                     URI uri = new URI(path);
                     Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;

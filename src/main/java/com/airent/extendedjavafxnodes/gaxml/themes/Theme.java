@@ -1,4 +1,4 @@
-package com.airent.extendedjavafxnodes.themes;
+package com.airent.extendedjavafxnodes.gaxml.themes;
 
 import com.airent.extendedjavafxnodes.utils.Named;
 import javafx.scene.paint.Color;
