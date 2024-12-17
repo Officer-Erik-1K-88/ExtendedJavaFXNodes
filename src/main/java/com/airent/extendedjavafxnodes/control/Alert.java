@@ -1,6 +1,5 @@
 package com.airent.extendedjavafxnodes.control;
 
-import com.airent.extendedjavafxnodes.utils.Resources;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -110,7 +109,7 @@ public class Alert extends Dialog<ButtonType> {
         if (!getContentText().equals(body)) {
             this.setContentText(body);
         }
-        //this.setResizable(true);
+        this.setResizable(true);
 
         if (getAlertType() == AlertType.PROMPT) {
             if (input == null) {
@@ -487,7 +486,6 @@ public class Alert extends Dialog<ButtonType> {
         AlertType(String imgPath) {
             image = new Image(
                     Objects.requireNonNull(Alert.class.getResource(imgPath)).toExternalForm(),
-                    //Resources.loadResource(imgPath).url().toExternalForm(),
                     iWidth,
                     iHeight,
                     true,
@@ -510,7 +508,6 @@ public class Alert extends Dialog<ButtonType> {
         AlertType(javafx.scene.control.Alert.AlertType equivalent, String imgPath) {
             image = new Image(
                     Objects.requireNonNull(Alert.class.getResource(imgPath)).toExternalForm(),
-                    //Resources.loadResource(imgPath).url().toExternalForm(),
                     iWidth,
                     iHeight,
                     true,
