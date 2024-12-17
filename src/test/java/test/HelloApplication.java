@@ -1,5 +1,6 @@
 package test;
 
+import com.airent.extendedjavafxnodes.control.Alert;
 import com.airent.extendedjavafxnodes.control.FilePicker;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,7 @@ public class HelloApplication extends Application {
             FilePicker filePicker = new FilePicker();
             vBox.getChildren().add(filePicker);
         }
-
+        Alert.showAlert("Test", "This is a Test.");
         stage.show();
     }
 

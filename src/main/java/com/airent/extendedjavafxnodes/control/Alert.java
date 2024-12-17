@@ -18,6 +18,7 @@ import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -438,33 +439,33 @@ public class Alert extends Dialog<ButtonType> {
          * The simple AlertType for declaring the alert of some
          * information.
          */
-        INFORMATION("/com/airent/extendedjavafxnodes/control/Alert.Information.png"),
+        INFORMATION("Alert.Information.png"),
         /**
          * Alerts the user of a possible minor issue
          * that doesn't need to be adressed,
          * but is important.
          */
-        WARNING("/com/airent/extendedjavafxnodes/control/Alert.Warning.png"),
+        WARNING("Alert.Warning.png"),
         /**
          * Asks the user a yes or no question.
          */
-        CONFIRMATION("/com/airent/extendedjavafxnodes/control/Alert.Confirmation.png"),
+        CONFIRMATION("Alert.Confirmation.png"),
         /**
          * Asks the user for some text imput.
          */
-        PROMPT(CONFIRMATION.equivalent, "/com/airent/extendedjavafxnodes/control/Alert.Prompt.png"),
+        PROMPT(CONFIRMATION.equivalent, "Alert.Prompt.png"),
         /**
          * The same as the confirmation AlertType,
          * but is explicitely for validating that some
          * action should be executed.
          */
-        VALIDATE(CONFIRMATION.equivalent, "/com/airent/extendedjavafxnodes/control/Alert.Validate.png"),
+        VALIDATE(CONFIRMATION.equivalent, "Alert.Validate.png"),
         /**
          * Calls out an error that has occured,
          * this highlights major issues that
          * will affect other actions.
          */
-        ERROR("/com/airent/extendedjavafxnodes/control/Alert.Error.png");
+        ERROR("Alert.Error.png");
 
         private javafx.scene.control.Alert.AlertType equivalent;
         private final Image image;
@@ -485,7 +486,8 @@ public class Alert extends Dialog<ButtonType> {
 
         AlertType(String imgPath) {
             image = new Image(
-                    Resources.loadResource(imgPath).url().toExternalForm(),
+                    Objects.requireNonNull(Alert.class.getResource(imgPath)).toExternalForm(),
+                    //Resources.loadResource(imgPath).url().toExternalForm(),
                     iWidth,
                     iHeight,
                     true,
@@ -507,7 +509,8 @@ public class Alert extends Dialog<ButtonType> {
 
         AlertType(javafx.scene.control.Alert.AlertType equivalent, String imgPath) {
             image = new Image(
-                    Resources.loadResource(imgPath).url().toExternalForm(),
+                    Objects.requireNonNull(Alert.class.getResource(imgPath)).toExternalForm(),
+                    //Resources.loadResource(imgPath).url().toExternalForm(),
                     iWidth,
                     iHeight,
                     true,
