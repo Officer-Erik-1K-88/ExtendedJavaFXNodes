@@ -9,4 +9,5 @@ module com.airent.extendedjavafxnodes {
 
     opens com.airent.extendedjavafxnodes.control to javafx.fxml;
     exports com.airent.extendedjavafxnodes.control;
+    exports com.airent.extendedjavafxnodes.utils;
 }
