@@ -1,54 +1,104 @@
 package com.airent.extendedjavafxnodes.control;
 
-import com.airent.extendedjavafxnodes.gaxml.Formatter;
+import com.airent.extendedjavafxnodes.gaxml.Attributes;
+import com.airent.extendedjavafxnodes.gaxml.XMLProcessor;
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.utils.ListMap;
-import javafx.beans.property.ObjectProperty;
+import com.airent.extendedjavafxnodes.utils.Pair;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+
+import java.net.URL;
+import java.util.List;
 
 public class TutorialContent extends VBox {
-    private ImageView imageView;
-    private VBox textContent;
-    private Button next;
-    private Button previous;
-    private Label flowCounter;
+    private final ImageView imageView;
+    private final VBox textContent;
+    private final Button next;
+    private final Button previous;
+    private final Label flowCounter;
 
     private int current = 0;
 
     private final ListMap<String, TutorialInfo> info = new ListMap<>();
 
     public TutorialContent() {
-        super();
+        super(6);
+        setFillWidth(true);
+        setAlignment(Pos.TOP_CENTER);
+        setPrefWidth(300);
+        setMaxWidth(300);
+        BorderStroke borderStroke = new BorderStroke(
+                Color.BLACK,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                new BorderWidths(2));
+        Border border = new Border(borderStroke);
+        setBorder(border);
+        setPadding(new Insets(10));
+
         imageView = new ImageView();
+
         textContent = new VBox();
+        textContent.setFillWidth(true);
+        textContent.setAlignment(Pos.TOP_CENTER);
+        textContent.setPrefWidth(300);
+        textContent.setMaxWidth(300);
+
         previous = new Button("Previous");
         previous.setDisable(true);
+        previous.setOnAction(this::proceedToPrevious);
         flowCounter = new Label("0 / 0");
         next = new Button("Next");
-        next.setDisable(true);
+        next.setText("Close");
+        next.setOnAction(this::proceedToNext);
+
         HBox hBox = new HBox(previous, flowCounter, next);
-        getChildren().addAll(imageView, textContent, hBox);
+        hBox.setFillHeight(true);
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+        separator.setMinHeight(16);
+        separator.setPrefHeight(30);
+
+        getChildren().addAll(imageView, textContent, separator, hBox);
     }
 
-    public final void addSlide(String title, Image image, String description, Theme theme) {
-        info.put(title, new TutorialInfo(title, image, description, theme));
-        updateFlowCounter();
+    public final void addSlide(String title, Image image, URL url, Theme theme) {
+        info.put(title, new TutorialInfo(title, image, url, theme));
+        updateContent();
     }
 
     public final void updateFlowCounter() {
         if (info.isEmpty()) {
             flowCounter.setText("0 / 0");
             previous.setDisable(true);
-            next.setDisable(true);
+            next.setText("Close");
         } else {
             flowCounter.setText((current+1)+" / "+info.size());
             previous.setDisable(current <= 0);
-            next.setDisable(current + 1 >= info.size());
+            if (current + 1 >= info.size()) {
+                next.setText("Close");
+            } else {
+                next.setText("Next");
+            }
         }
     }
 
@@ -64,21 +114,20 @@ public class TutorialContent extends VBox {
         } else {
             TutorialInfo tutorialInfo = info.getValue(current);
             imageView.setImage(tutorialInfo.getImage());
-            Formatter formatter = new Formatter(tutorialInfo.getTheme());
-            String[] paras = tutorialInfo.getDescription().split("\n");
-            for (String para : paras) {
-
-            }
+            textContent.getChildren().addAll(tutorialInfo.load());
         }
         updateFlowCounter();
     }
 
-    public final void proceedToNext() {
+    public final void proceedToNext(ActionEvent event) {
         if (current + 1 < info.size()) {
             updateContent(current+1);
+        } else {
+            setVisible(false);
+            current = 0;
         }
     }
-    public final void proceedToPrevious() {
+    public final void proceedToPrevious(ActionEvent event) {
         if (current > 0) {
             updateContent(current-1);
         }
@@ -90,15 +139,7 @@ public class TutorialContent extends VBox {
      *                                                                         *
      **************************************************************************/
 
-    public final ObjectProperty<Image> imageProperty() {
-        return imageView.imageProperty();
-    }
-    public final Image getImage() {
-        return imageView.getImage();
-    }
-    public final void setImage(Image image) {
-        imageView.setImage(image);
-    }
+
 
     /* *************************************************************************
      *                                                                         *
@@ -109,13 +150,13 @@ public class TutorialContent extends VBox {
     public final static class TutorialInfo {
         private final String title;
         private Image image;
-        private String description;
+        private final URL url;
         private Theme theme;
 
-        public TutorialInfo(String title, Image image, String description, Theme theme) {
+        public TutorialInfo(String title, Image image, URL url, Theme theme) {
             this.title = title;
             this.image = image;
-            this.description = description;
+            this.url = url;
             this.theme = theme;
         }
 
@@ -131,12 +172,8 @@ public class TutorialContent extends VBox {
             this.image = image;
         }
 
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
+        public URL getURL() {
+            return url;
         }
 
         public Theme getTheme() {
@@ -145,6 +182,12 @@ public class TutorialContent extends VBox {
 
         public void setTheme(Theme theme) {
             this.theme = theme;
+        }
+
+        private List<Node> load() {
+            XMLProcessor processor = new XMLProcessor(getURL());
+            processor.setTheme(theme);
+            return processor.load(new Attributes(new Pair<>("align", "top_center")));
         }
     }
 }

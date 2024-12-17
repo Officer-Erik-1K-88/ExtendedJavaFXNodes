@@ -2,6 +2,7 @@ package com.airent.extendedjavafxnodes.gaxml;
 
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.effect.BlendMode;
@@ -22,6 +23,7 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -187,12 +189,20 @@ public class Formatter {
         } else {
             node.setFill(theme.getSecondary());
         }
+        double height = -1;
+        if (format.containsKey("height")) {
+            height = Double.parseDouble(format.get("height"));
+        }
         if (format.containsKey("width")) {
             double width = Double.parseDouble(format.get("width"));
-            node.maxWidth(width);
-            node.prefWidth(width);
+            if (height == -1) height = node.prefHeight(width);
+            node.resize(width, height);
             if (node instanceof Text) {
                 ((Text) node).setWrappingWidth(width);
+            }
+        } else {
+            if (height != -1) {
+                node.resize(node.prefWidth(height), height);
             }
         }
         // outline
@@ -235,6 +245,9 @@ public class Formatter {
         if (format.containsKey("tab-size")) {
             node.setTabSize(Integer.parseInt(format.get("tab-size")));
         }
+        if (format.containsKey("align")) {
+            node.setTextAlignment(posToAlignment(format.get("align")));
+        }
         // highlighting (selection)
         if (format.containsKey("highlight-color")) {
             node.setSelectionFill(Color.web(format.get("highlight-color")));
@@ -272,6 +285,34 @@ public class Formatter {
                     node.underlineShape(Integer.parseInt(underline[0]), Integer.parseInt(underline[1]));
                 }
             }
+        }
+    }
+
+    private TextAlignment posToAlignment(@NotNull String value) {
+        if (value.equalsIgnoreCase("TOP_RIGHT")) {
+            return TextAlignment.RIGHT;
+        } else if (value.equalsIgnoreCase("CENTER_RIGHT")) {
+            return TextAlignment.RIGHT;
+        } else if (value.equalsIgnoreCase("BOTTOM_RIGHT")) {
+            return TextAlignment.RIGHT;
+        } else if (value.equalsIgnoreCase("BASELINE_RIGHT")) {
+            return TextAlignment.RIGHT;
+        } else if (value.equalsIgnoreCase("TOP_LEFT")) {
+            return TextAlignment.LEFT;
+        } else if (value.equalsIgnoreCase("CENTER_LEFT")) {
+            return TextAlignment.LEFT;
+        } else if (value.equalsIgnoreCase("BOTTOM_LEFT")) {
+            return TextAlignment.LEFT;
+        } else if (value.equalsIgnoreCase("BASELINE_LEFT")) {
+            return TextAlignment.LEFT;
+        } else if (value.equalsIgnoreCase("TOP_CENTER")) {
+            return TextAlignment.CENTER;
+        } else if (value.equalsIgnoreCase("BOTTOM_CENTER")) {
+            return TextAlignment.CENTER;
+        } else if (value.equalsIgnoreCase("BASELINE_CENTER")) {
+            return TextAlignment.CENTER;
+        } else {
+            return TextAlignment.valueOf(value);
         }
     }
 
@@ -335,6 +376,22 @@ public class Formatter {
             double height = Double.parseDouble(format.get("height"));
             pane.setMaxHeight(height);
             pane.setPrefHeight(height);
+        }
+        if (format.containsKey("align")) {
+            if (pane instanceof VBox vBox) {
+                if (format.get("align").equalsIgnoreCase("justify")) {
+                    vBox.setAlignment(Pos.BASELINE_CENTER);
+                } else if (format.get("align").equalsIgnoreCase("left")) {
+                    vBox.setAlignment(Pos.BASELINE_LEFT);
+                } else if (format.get("align").equalsIgnoreCase("right")) {
+                    vBox.setAlignment(Pos.BASELINE_RIGHT);
+                } else {
+                    vBox.setAlignment(Pos.valueOf(format.get("align")));
+                }
+            } else {
+                TextFlow textFlow = (TextFlow) pane;
+                textFlow.setTextAlignment(posToAlignment(format.get("align")));
+            }
         }
         // border
         if (format.containsKey("border")) {

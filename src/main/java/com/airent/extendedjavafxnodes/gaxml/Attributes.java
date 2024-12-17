@@ -15,6 +15,15 @@ public class Attributes {
     private HashMap<String, String> attributes = new HashMap<>();
     private boolean onlyPassable;
 
+    @SafeVarargs
+    public Attributes(Map.Entry<String, String> @NotNull ... attrs) {
+        this.node = null;
+        this.onlyPassable = false;
+        for (Map.Entry<String, String> attr : attrs) {
+            put(attr.getKey(), attr.getValue());
+        }
+    }
+
     public Attributes(Node node, @NotNull Attributes attr) {
         this(node, false);
         this.attributes.putAll(attr.getAttributes());

@@ -1,9 +1,9 @@
 package com.airent.extendedjavafxnodes.gaxml;
 
 import com.airent.extendedjavafxnodes.gaxml.javascript.Script;
-import com.airent.extendedjavafxnodes.control.Button;
-import com.airent.extendedjavafxnodes.gaxml.story.StoryProcessor;
-import com.airent.extendedjavafxnodes.gaxml.themes.Dark;
+import com.airent.extendedjavafxnodes.gaxml.story.Segment;
+import com.airent.extendedjavafxnodes.gaxml.story.StoryPart;
+import com.airent.extendedjavafxnodes.gaxml.themes.Light;
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.utils.Convert;
 import com.airent.extendedjavafxnodes.utils.Pair;
@@ -11,10 +11,10 @@ import com.airent.extendedjavafxnodes.utils.math.Equation;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -39,33 +39,86 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 public class XMLProcessor {
+    private final static StoryPart<Segment> segments = new StoryPart<Segment>() {
+        @Override
+        public String getName() {
+            return "Segments";
+        }
+    };
     private final Path filePath;
     private final XML file;
     private final Script script;
-    private final Theme theme;
+    private Theme theme;
 
-    public XMLProcessor(XML file) {
-        this.file = file;
-        this.filePath = this.file.getFile().toPath();
-        this.script = new Script(this);
-        this.theme = new Dark();
+    private void addToSegments() {
+        Segment segment = new Segment(this.filePath.toString(), this);
+        segments.add(segment);
+    }
+
+    public XMLProcessor(@NotNull URL url) {
+        String path = url.getFile();
+        if (segments.containsKey(path)) {
+            XMLProcessor actual = segments.get(path).getProcessor();
+            this.file = actual.getFile();
+            this.filePath = actual.getFilePath();
+            this.script = actual.getScript();
+            this.theme = actual.getTheme();
+            this.alreadyPreloaded = actual.alreadyPreloaded;
+        } else {
+            try {
+                file = new XML(Path.of(url.toURI()), false);
+            } catch (IOException | URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+            this.filePath = this.file.getFile().toPath();
+            this.script = new Script(this);
+            this.theme = new Light();
+            addToSegments();
+        }
+    }
+
+    public XMLProcessor(@NotNull XML file) {
+        String path = file.getFile().toPath().toString();
+        if (segments.containsKey(path)) {
+            XMLProcessor actual = segments.get(path).getProcessor();
+            this.file = actual.getFile();
+            this.filePath = actual.getFilePath();
+            this.script = actual.getScript();
+            this.theme = actual.getTheme();
+            this.alreadyPreloaded = actual.alreadyPreloaded;
+        } else {
+            this.file = file;
+            this.filePath = this.file.getFile().toPath();
+            this.script = new Script(this);
+            this.theme = new Light();
+            addToSegments();
+        }
     }
 
     public XMLProcessor(String path) {
         filePath = findPath(path, true);
-        try {
-            file = new XML(filePath, false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        String path2 = filePath.toString();
+        if (segments.containsKey(path2)) {
+            XMLProcessor actual = segments.get(path2).getProcessor();
+            this.file = actual.getFile();
+            this.script = actual.getScript();
+            this.theme = actual.getTheme();
+            this.alreadyPreloaded = actual.alreadyPreloaded;
+        } else {
+            try {
+                file = new XML(filePath, false);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            this.script = new Script(this);
+            this.theme = new Light();
+            addToSegments();
         }
-        this.script = new Script(this);
-        this.theme = new Dark();
     }
 
     private Path checkParent(Path parent, String find, int level) {
@@ -175,12 +228,23 @@ public class XMLProcessor {
         return theme;
     }
 
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+    }
+
     public void save() {
         try {
             file.update();
         } catch (TransformerException e) {
             System.out.println("Failed to save story file.");
         }
+    }
+
+    public VBox display() {
+        VBox vBox = new VBox();
+        vBox.setFillWidth(true);
+        vBox.getChildren().addAll(load());
+        return vBox;
     }
 
     public List<Node> load() {
@@ -202,10 +266,9 @@ public class XMLProcessor {
      *     The top level element,
      *     can also be used for defining reusable templates
      *     that can be called for by a call of an inline page tag.
-     *     All page tags must have a 'path' attribute that represents
-     *     the directory to the GA-XML file. The path must be separated using ':',
-     *     as an example if you have the path of "path/to/file.xml", the defined
-     *     path attribute must be "path:to:file".
+     *     All inline page tags must have a 'path' attribute that represents
+     *     the directory to the GA-XML file. The path must be separated using '/',
+     *     for example the path must be like "path/to/file.xml".
      * </p>
      * <p>
      *     Inline pages are defined as a page tag that has the 'type' attribute
@@ -329,7 +392,7 @@ public class XMLProcessor {
                                     if (isNotice) {
                                         text.add("<" + notice + " ---->", new Attributes(attrs, true));
                                     }
-                                    text.add(StoryProcessor.load(path, text.getBaseFormat(new Attributes(attrs, true)).getAttributes()));
+                                    text.add(new XMLProcessor(path).load(text.getBaseFormat(new Attributes(attrs, true))));
                                     if (elm.getChildNodes().getLength() != 0) {
                                         text.add(load(elmXML, level + 1, text.getBaseFormat(new Attributes(attrs, true))));
                                     }

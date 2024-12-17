@@ -20,8 +20,7 @@ public class Segment implements Named {
         this.gaxml = gaxml;
     }
     public Segment(String name, @NotNull XMLProcessor processor) {
-        this.name = name;
-        this.gaxml = processor.getFile();
+        this(name, processor.getFile());
         this.processor = processor;
     }
 
@@ -32,6 +31,10 @@ public class Segment implements Named {
 
     public XML getGaxml() {
         return gaxml;
+    }
+
+    public XMLProcessor getProcessor() {
+        return processor;
     }
 
     public List<Node> load(Attributes attributes) {
