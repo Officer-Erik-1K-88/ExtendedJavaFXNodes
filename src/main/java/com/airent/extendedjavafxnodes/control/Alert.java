@@ -171,7 +171,7 @@ public class Alert extends Dialog<ButtonType> {
     /**
      * The same as {@link #showAndWait()}, but handles the factor of a
      * {@link AlertType#PROMPT prompted} alert and returns the text of the {@link #input}.
-     * <br>
+     * <BR>
      * Returns null if any exceptions occur after this {@code Alert} is closed.
      *
      * @return The text provided to a {@link AlertType#PROMPT} on confirmation.
@@ -506,7 +506,7 @@ public class Alert extends Dialog<ButtonType> {
         /**
          * Converts this {@code AlertType} enum into it's equivalent
          * {@code javafx.scene.control.Alert.AlertType} enum.
-         * <br>
+         * <BR>
          * if this {@code AlertType} enum doesn't have a counterpart
          * {@code javafx.scene.control.Alert.AlertType} enum,
          * then {@link javafx.scene.control.Alert.AlertType#NONE} is returned.
@@ -520,7 +520,7 @@ public class Alert extends Dialog<ButtonType> {
 
         /**
          * Gets the property that stores the image of this AlertType.
-         * <br>
+         * <BR>
          * This exists only to allow for image changing of AlertTypes.
          *
          * @return The {@link ObjectProperty} that stores the image.

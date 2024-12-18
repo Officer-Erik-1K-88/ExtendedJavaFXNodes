@@ -2,7 +2,7 @@ package com.airent.extendedjavafxnodes.utils;
 
 /**
  * Throws a new IdentificationException.
- * <br>
+ * <BR>
  * Declares that something went wrong during the process of identifying an object.
  */
 public class IdentificationException extends RuntimeException {

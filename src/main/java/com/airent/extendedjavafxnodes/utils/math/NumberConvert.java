@@ -471,7 +471,7 @@ public class NumberConvert {
 
     /**
      * Converts a number to words.
-     * <br>
+     * <BR>
      * This method can handle any type of number value
      * and any object that can be converted into a
      * string version of a number by call from {@link String#valueOf(Object)}.
@@ -695,38 +695,38 @@ public class NumberConvert {
      * that is in a valid format for {@link BigDecimal} to parse.
      * However, there are a few exceptions to this clause,
      * those exceptions are as follows:
-     * <br>
+     * <BR>
      * {@code null} - Returns zero.
      * It Can be a String literal (case-insensitive)
      * or actual null.
-     * <hr>
+     * <HR>
      * {@code true} - Returns one.
      * It Can be a String literal (case-insensitive)
      * or the boolean value of true.
-     * <hr>
+     * <HR>
      * {@code false} - Returns zero.
      * It Can be a String literal (case-insensitive)
      * or the boolean value of false.
-     * <hr>
+     * <HR>
      * {@code CharSequence} - Firstly the CharSequence
      * is converted into a string and then is checked to
      * see if it can be converted to {@code BigDecimal} and if it can't
      * then the string's length and the unicode number of each char in the string
      * will be added together then divided by the string's length to get the return.
-     * <hr>
+     * <HR>
      * {@code iterables, iterator, and arrays} - With these, we first convert all
      * stored objects into numbers using this method,
      * those numbers are then added up and divided by the length of the iterable,
      * iterator, or array.
      * However, if the value's length is zero, then the
      * object's hashcode will be returned.
-     * <hr>
+     * <HR>
      * {@code maps} - If it is a map, then the same thing as
      * {@code iterables, iterator, and arrays} will occur,
      * but instead of just one value, it'll be doing two values.
      * Both the key and value are converted into their respective
      * number values; they are added together, then divided by two.
-     * <hr><br>
+     * <HR><BR>
      * Any other values that don't meet any of the listed out criteria,
      * then that object's hashcode will be returned.
      *

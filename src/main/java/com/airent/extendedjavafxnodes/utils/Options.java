@@ -40,7 +40,7 @@ public class Options<T> {
      * if two or more stored Pairs share the same key, then only
      * the first Pair will be added to the Options.
      *
-     * <br>
+     * <BR>
      *
      * The max capacity will be set to the number of items added
      * to this Options.
@@ -142,7 +142,7 @@ public class Options<T> {
     /**
      * Adds/updates this Options with the key and value stated.
      *
-     * <br>
+     * <BR>
      *
      * If this Options has no space left, or the key already exists,
      * then this method will function exactly the same as

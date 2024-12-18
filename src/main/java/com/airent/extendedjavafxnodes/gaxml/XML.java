@@ -342,17 +342,17 @@ public class XML {
 
         // transformer
         /**
-         * <p>Transform the XML <code>Source</code> to a <code>Result</code>.
+         * <P>Transform the XML <code>Source</code> to a <code>Result</code>.
          * Specific transformation behavior is determined by the settings of the
          * <code>TransformerFactory</code> in effect when the
          * <code>Transformer</code> was instantiated and any modifications made to
-         * the <code>Transformer</code> instance.</p>
+         * the <code>Transformer</code> instance.</P>
          *
-         * <p>An empty <code>Source</code> is represented as an empty document
+         * <P>An empty <code>Source</code> is represented as an empty document
          * as constructed by {@link javax.xml.parsers.DocumentBuilder#newDocument()}.
          * The result of transforming an empty <code>Source</code> depends on
          * the transformation behavior; it is not always an empty
-         * <code>Result</code>.</p>
+         * <code>Result</code>.</P>
          *
          * @param xmlSource The XML input to transform.
          * @param outputTarget The <code>Result</code> of transforming the
@@ -368,16 +368,16 @@ public class XML {
         /**
          * Add a parameter for the transformation.
          *
-         * <p>Pass a qualified name as a two-part string, the namespace URI
+         * <P>Pass a qualified name as a two-part string, the namespace URI
          * enclosed in curly braces ({}), followed by the local name. If the
          * name has a null URL, the String only contain the local name. An
          * application can safely check for a non-null URI by testing to see if the
-         * first character of the name is a '{' character.</p>
-         * <p>For example, if a URI and local name were obtained from an element
+         * first character of the name is a '{' character.</P>
+         * <P>For example, if a URI and local name were obtained from an element
          * defined with &lt;xyz:foo
          * xmlns:xyz="http://xyz.foo.com/yada/baz.html"/&gt;,
          * then the qualified name would be "{http://xyz.foo.com/yada/baz.html}foo".
-         * Note that no prefix is used.</p>
+         * Note that no prefix is used.</P>
          *
          * @param name The name of the parameter, which may begin with a
          * namespace URI in curly braces ({}).
@@ -394,7 +394,7 @@ public class XML {
         /**
          * Get a parameter that was explicitly set with setParameter.
          *
-         * <p>This method does not return a default parameter value, which
+         * <P>This method does not return a default parameter value, which
          * cannot be determined until the node context is evaluated during
          * the transformation process.
          *

@@ -2,7 +2,7 @@ package com.airent.extendedjavafxnodes.utils;
 
 /**
  * Throws a new UpdateDeniedException.
- * <br>
+ * <BR>
  * Declares that some value cannot be changed.
  */
 public class UpdateDeniedException extends IdentificationException {

@@ -389,11 +389,11 @@ public class FilePicker extends Control {
      *   <tr class="altColor"><th scope="row">"" </th>           <td>No ellipsis, just display the truncated string</td>
      * </table>
      *
-     * <p>Note that not all fonts support all Unicode characters.
+     * Note that not all fonts support all Unicode characters.
      *
      * @return the ellipsis property on the string to display for the ellipsis
      * when text is truncated
-     * @see <a href="http://en.wikipedia.org/wiki/Ellipsis#Computer_representations">Wikipedia:ellipsis</a>
+     * @see <A href="http://en.wikipedia.org/wiki/Ellipsis#Computer_representations">Wikipedia:ellipsis</A>
      * @defaultValue {@code "..."}
      * @since JavaFX 2.2
      */

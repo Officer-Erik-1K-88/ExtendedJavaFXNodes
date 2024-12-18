@@ -25,13 +25,13 @@ import java.util.Optional;
  * A Dialog wraps a JavaFX Dialog object (witch wraps a JavaFX DialogPane)
  * and provides the necessary API to present it to end users.
  * This essentially means that the DialogPane is shown to users inside a Stage.
- * <br><br>
+ * <BR><BR>
  * The Dialog class has a single generic type, R,
  * which is used to represent the type of the result property
  * (and also, how to convert from ButtonType to R, through the use of the
  * {@link #resultConverterProperty() result converter} {@link Callback}).
- * <br><br>
- * Refer to the <a href="https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Dialog.html">JavaFX Dialog</a>
+ * <BR><BR>
+ * Refer to the <A href="https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Dialog.html">JavaFX Dialog</A>
  * class documentation for more detail.
  *
  * @param <R> The return type of the dialog, via the result property.
@@ -73,7 +73,7 @@ public class Dialog<R> implements EventTarget {
      * Shows the dialog and waits for the user response
      * (in other words, brings up a blocking dialog, with the returned value the users input).
      * @return An {@link Optional} that contains the result.
-     * Refer to the <a href="https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Dialog.html">Dialog</a>
+     * Refer to the <A href="https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Dialog.html">Dialog</A>
      * class documentation for more detail.
      */
     public final Optional<R> showAndWait() {
@@ -98,7 +98,7 @@ public class Dialog<R> implements EventTarget {
 
     /**
      * Hides the dialog.
-     * <br>
+     * <BR>
      * This method is exactly the same to {@link #close()}.
      */
     public final void hide() {

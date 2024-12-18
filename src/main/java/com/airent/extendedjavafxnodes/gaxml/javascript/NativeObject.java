@@ -100,7 +100,7 @@ public abstract class NativeObject extends IdScriptableObject {
 
         /**
          * This method will add functions to the NativeObject being initialized.
-         * <br><br>
+         * <BR><BR>
          * The action provides two Pair values,
          * this first Pair has a key value of {@link Context}
          * and the value is of {@link Scriptable} (The scope).
@@ -206,7 +206,7 @@ public abstract class NativeObject extends IdScriptableObject {
      * Return the name of the class.
      * This is typically the same name as the constructor.
      * Classes extending ScriptableObject must implement this abstract method.
-     * <br><br>
+     * <BR><BR>
      * This value is used as the value for {@link #thisPropertyName()} by default.
      *
      * @return The name of this class.
@@ -218,7 +218,7 @@ public abstract class NativeObject extends IdScriptableObject {
 
     /**
      * Gets the recognized name of this NativeObject.
-     * <br><br>
+     * <BR><BR>
      * By default, this value is the same as {@link #getClassName()}.
      *
      * @return The name that this NativeObject takes as its property name.
@@ -243,7 +243,7 @@ public abstract class NativeObject extends IdScriptableObject {
     /**
      * Handles the storage of objects on construction of a
      * class extending {@code NativeObject}.
-     * <br><br>
+     * <BR><BR>
      * By default, this method loops through all objects provided.
      * If the object is an instance of {@link Pair} and the key value
      * is an instance of a String, then the object will be turned into

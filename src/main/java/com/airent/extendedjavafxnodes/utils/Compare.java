@@ -31,18 +31,18 @@ public class Compare implements Comparator<Object> {
      * Returns a negative integer, zero,
      * or a positive integer as the first argument
      * is less than, equal to, or greater than the second.
-     * <br>
+     * <BR>
      * The two objects don't need to be of the same type for any of the conversion
      * methods to work, only one of them needs to be of the appropriate class.
-     * <br><br>
+     * <BR><BR>
      * If one of the values is null, then the null is considered the smallest.
-     * <hr>
+     * <HR>
      * When comparing booleans, then the {@link #illogicalBoolCompare(Object, Object)}
      * is used to compare the objects.
-     * <hr>
+     * <HR>
      * When comparing CharSequences then the {@link #charCompare(Object, Object)}
      * is used to compare the objects.
-     * <hr>
+     * <HR>
      * When comparing Map.Entry's then the keys are compared
      * and values are compared separately.
      * This in turn makes the comparing to prioritize the comparison
@@ -53,10 +53,10 @@ public class Compare implements Comparator<Object> {
      * And if the keys
      * would return negative one, then negative one is returned
      * unless values would return one, then one shall be returned.
-     * <hr>
+     * <HR>
      * When comparing arrays, iterators, and iterables, then it'll use
      * {@link #arrayCompare(Object, Object)}.
-     * <hr>
+     * <HR>
      * Anything that doesn't have a specific compare function
      * will be compared with {@link #numberCompare(Object, Object)}.
      *
@@ -137,7 +137,7 @@ public class Compare implements Comparator<Object> {
     /**
      * Compares two objects after they both have been converted
      * into boolean values with {@link Convert#toBoolean(Object)}.
-     * <br>
+     * <BR>
      * This method may seem similar to {@link #boolCompare(Object, Object)},
      * however, this method is illogical and doesn't give zero when both
      * boolean values are truly the same
@@ -196,11 +196,11 @@ public class Compare implements Comparator<Object> {
 
     /**
      * Converts two objects into lists and compares the lists.
-     * <br>
+     * <BR>
      * This method is meant mainly for comparing of
      * arrays, iterables, iterators, and maps.
      * With maps, it is its entrySet that will be used.
-     * <br><br>
+     * <BR><BR>
      * Firstly, this method converts the two objects into
      * lists if possible, otherwise, will put
      * the object into a list by its self.
@@ -209,15 +209,15 @@ public class Compare implements Comparator<Object> {
      * And for each of those items, it'll loop through all the
      * items from the list made from the second object comparing
      * each item using {@link #compare(Object, Object)}.
-     * <br>
+     * <BR>
      * Meaning that for each item of the first list,
      * all the items of the second list will be compared to that
      * one item.
-     * <br><br>
+     * <BR><BR>
      * Due to this method looping the second list per item of the
      * first list, there is a loop cap. The loop cap limits the
      * looping to {@link #loopCap} loops.
-     * <br>
+     * <BR>
      * If the looping exceeds the loop cap, then the looping of
      * the second list ends, only comparing the first item of
      * the second list to the remaining items of the first list
@@ -236,7 +236,7 @@ public class Compare implements Comparator<Object> {
 
     /**
      * Converts two objects into lists and compares the lists.
-     * <br>
+     * <BR>
      * Refer to {@link #arrayCompare(Object, Object)} for more
      * information on how arrays, iterables, iterators, and maps
      * are compared.

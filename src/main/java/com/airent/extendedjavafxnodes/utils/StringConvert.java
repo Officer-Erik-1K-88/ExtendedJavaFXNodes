@@ -11,162 +11,162 @@ import java.util.function.BiFunction;
 /**
  * The StringConvert class is a container for String handling.
  *
- * <h1 id="title">Title</h1>
- * <p>
+ * <H1 id="title">Title</H1>
+ * <P>
  *     The information for all things related to title casing.
- * </p>
- * <h2 id="titleStyles">Styles</h2>
+ * </P>
+ * <H2 id="titleStyles">Styles</H2>
  * Information about the style types allowed for title casing.
- * <h4>Same across all types</h4>
- * <p>
+ * <H4>Same across all types</H4>
+ * <P>
  *     Most style guides recommend capitalizing
  *     nouns, verbs, pronouns, adjectives, and adverbs
  *     in the titles of books, articles, and songs.
  *     Most guides also recommend that you capitalize
  *     the first and last words in any title,
  *     no matter what part of speech those words are.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     All style guides agree that "to" shouldn't be
  *     capitalized unless it’s the first or last word of a title.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     In English, there are three articles: "a," "an," and "the."
  *     These small words normally don't need to be capitalized in titles.
  *     However, if the article falls at the beginning of the title,
  *     then it should be capitalized.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     Every style guide agrees that prepositions with
  *     three letters or less shouldn't be capitalized.
  *     Only capitalize prepositions if they have four or more letters.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     Regardless of which style guide you’re using, the conjunctions
  *     "but," "and," "nor," "or," "for," "so," "as," "if," and "yet"
  *     are to not be capitalized unless they are the first or last word in a title.
- * </p>
+ * </P>
  * The following are the style types:
- * <br>
- * <h4 id="sAP">ap - The Associated Press Stylebook</h4>
- * <p>Capitalize the first and last words.</p>
- * <p>
+ * <BR>
+ * <H4 id="sAP">ap - The Associated Press Stylebook</H4>
+ * <P>Capitalize the first and last words.</P>
+ * <P>
  *     The AP style guide recommends that prepositions
  *     longer than four letters should be capitalized.
- * </p>
- * <p>AP style requires that conjunctions with three letters or fewer are lowercase.</p>
- * <p>Lowercase the articles the, a, and an.</p>
- * <p>Capitalize the "to" in infinitives.</p>
- * <hr>
- * <h4 id="sCM">cm - Chicago Manual of Style</h4>
- * <p>Always capitalize the first and last words of titles and subtitles.</p>
- * <p>
+ * </P>
+ * <P>AP style requires that conjunctions with three letters or fewer are lowercase.</P>
+ * <P>Lowercase the articles the, a, and an.</P>
+ * <P>Capitalize the "to" in infinitives.</P>
+ * <HR>
+ * <H4 id="sCM">cm - Chicago Manual of Style</H4>
+ * <P>Always capitalize the first and last words of titles and subtitles.</P>
+ * <P>
  *     Always capitalize "major" words
  *     (nouns, pronouns, verbs, adjectives, adverbs, and some conjunctions).
- * </p>
- * <p>Lowercase the conjunctions and, but, for, or, and nor.</p>
- * <p>Lowercase the articles the, a, and an.</p>
- * <p>
+ * </P>
+ * <P>Lowercase the conjunctions and, but, for, or, and nor.</P>
+ * <P>Lowercase the articles the, a, and an.</P>
+ * <P>
  *     Lowercase prepositions, of four letters or less,
  *     except when they are stressed, are used adverbially or adjectivally,
  *     or are used as conjunctions.
- * </p>
- * <p>Lowercase the words to and as.</p>
- * <p>Lowercase the second part of Latin species names.</p>
- * <p>
+ * </P>
+ * <P>Lowercase the words to and as.</P>
+ * <P>Lowercase the second part of Latin species names.</P>
+ * <P>
  *     Lowercase the second word after a hyphenated prefix
  *     (e.g., Mid-, Anti-, Super-, etc.) in compound modifiers
  *     (e.g., Mid-year, Anti-hero, etc.).
- * </p>
- * <hr>
- * <h4 id="sMLA">mla - Modern Language Association Handbook</h4>
- * <p>
+ * </P>
+ * <HR>
+ * <H4 id="sMLA">mla - Modern Language Association Handbook</H4>
+ * <P>
  *     Do not capitalize articles, prepositions (regardless of length),
  *     and coordinating conjunctions.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     According to the MLA, the first and last word of a title
  *     should be capitalized.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     Capitalize all major words
  *     (nouns, verbs including phrasal verbs such as "play with",
  *     adjectives, adverbs, and pronouns) in the title/heading,
  *     including the second part of hyphenated major words
  *     (e.g., Self-Report not Self-report).
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     If a title has a subtitle, MLA suggests using the same
  *     capitalization rules that you would use for the main title,
  *     including capitalizing the first and last word of the subtitle.
  *     If a preposition, conjunction, or article comes directly after a colon,
  *     they should also be capitalized.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     You should capitalize the first word of the hyphenated word.
  *     Only capitalize the word after the hyphen if it's a noun,
  *     a proper adjective, or equal in importance to the first word.
- *     <br>
+ *     <BR>
  *     If a title contains a hyphenated word,
  *     and the second word within the hyphenation is an adjective,
  *     then that second word shouldn't be capitalized.
- * </p>
- * <p>Do not capitalize "to" in infinitives.</p>
- * <hr>
- * <h4 id="sAPA">apa - APA Style</h4>
- * <p>Capitalize the first word of the title/heading and of any subtitle/subheading.</p>
- * <p>
+ * </P>
+ * <P>Do not capitalize "to" in infinitives.</P>
+ * <HR>
+ * <H4 id="sAPA">apa - APA Style</H4>
+ * <P>Capitalize the first word of the title/heading and of any subtitle/subheading.</P>
+ * <P>
  *     Capitalize all major words
  *     (nouns, verbs including phrasal verbs such as "play with",
  *     adjectives, adverbs, and pronouns) in the title/heading,
  *     including the second part of hyphenated major words
  *     (e.g., Self-Report not Self-report).
- * </p>
- * <p>Capitalize all words of four letters or more.</p>
- * <p>
+ * </P>
+ * <P>Capitalize all words of four letters or more.</P>
+ * <P>
  *     Lowercase the second word after a hyphenated prefix
  *     (e.g., Mid-, Anti-, Super-, etc.) in compound modifiers
  *     (e.g., Mid-year, Anti-hero, etc.).
- * </p>
- * <hr>
- * <h4 id="sAMA">ama - American Medical Association Manual of Style Capitalization Rules</h4>
- * <p>Capitalize the first and the last word of titles and subtitles.</p>
- * <p>
+ * </P>
+ * <HR>
+ * <H4 id="sAMA">ama - American Medical Association Manual of Style Capitalization Rules</H4>
+ * <P>Capitalize the first and the last word of titles and subtitles.</P>
+ * <P>
  *     Capitalize nouns, pronouns, adjectives, verbs
  *     (including phrasal verbs such as "play with"), adverbs,
  *     and subordinate conjunctions (major words).
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     Lowercase articles (a, an, the), coordinating conjunctions,
  *     and prepositions of three letters or fewer.
- * </p>
- * <p>Lowercase "to" in infinitives.</p>
- * <p>
+ * </P>
+ * <P>Lowercase "to" in infinitives.</P>
+ * <P>
  *     Lowercase the second word in a hyphenated compound
  *     when it is a prefix or suffix (e.g., "Anti-itch", "World-wide")
  *     or part of a single word.
- *     <br>
+ *     <BR>
  *     Capitalize the second word in a hyphenated compound
  *     if both words are equal and not suffixes or prefixes
  *     (e.g., "Cost-Benefit").
- * </p>
- * <p>Capitalize the genus but not the species epithet.</p>
- * <hr>
- * <h4 id="sBB">bb - The Bluebook</h4>
- * <p>Capitalize the first and the last word.</p>
- * <p>
+ * </P>
+ * <P>Capitalize the genus but not the species epithet.</P>
+ * <HR>
+ * <H4 id="sBB">bb - The Bluebook</H4>
+ * <P>Capitalize the first and the last word.</P>
+ * <P>
  *     Capitalize nouns, pronouns, adjectives, verbs
  *     (including phrasal verbs such as "play with"),
  *     adverbs, and subordinate conjunctions.
- * </p>
- * <p>
+ * </P>
+ * <P>
  *     Lowercase articles (a, an, the), coordinating conjunctions,
  *     and prepositions of four letters or fewer.
- * </p>
- * <p>Lowercase "to" in infinitives (though not defined in the stylebook).</p>
- * <hr>
- * <h4 id="sALL">all</h4>
- * <p>A mix of all the above style types.</p>
+ * </P>
+ * <P>Lowercase "to" in infinitives (though not defined in the stylebook).</P>
+ * <HR>
+ * <H4 id="sALL">all</H4>
+ * <P>A mix of all the above style types.</P>
  */
 public class StringConvert {
     private static final List<String> articleWords = Arrays.asList(
@@ -278,29 +278,29 @@ public class StringConvert {
     );
 
     /**
-     * Gives <a href="#title">title casing</a> to a given string.
+     * Gives <A href="#title">title casing</A> to a given string.
      *
-     * <br><br>
+     * <BR><BR>
      * Each of the following is how this method splits the statement
      * for title casing:
      * (What is removed during the splitting process is added back.)
-     * <br>
+     * <BR>
      * Firstly is the period (.), then the question mark (?),
      * then the exclamation mark (!), then the colon (:),
      * then the semicolon (;), and finally, to get each word,
      * it is split by the space.
      *
-     * <br><br>
+     * <BR><BR>
      * The following are the allowed style types:
-     * <ol>
-     *     <li><a href="#sAP">ap</a></li>
-     *     <li><a href="#sCM">cm</a></li>
-     *     <li><a href="#sMLA">mla</a></li>
-     *     <li><a href="#sAPA">apa</a></li>
-     *     <li><a href="#sAMA">ama</a></li>
-     *     <li><a href="#sBB">bb</a></li>
-     *     <li><a href="#sALL">all</a></li>
-     * </ol>
+     * <OL>
+     *     <LI><A href="#sAP">ap</A></LI>
+     *     <LI><A href="#sCM">cm</A></LI>
+     *     <LI><A href="#sMLA">mla</A></LI>
+     *     <LI><A href="#sAPA">apa</A></LI>
+     *     <LI><A href="#sAMA">ama</A></LI>
+     *     <LI><A href="#sBB">bb</A></LI>
+     *     <LI><A href="#sALL">all</A></LI>
+     * </OL>
      *
      * @param statement The string value to title case.
      * @param style The type of formatting for the title.
@@ -353,23 +353,23 @@ public class StringConvert {
     /**
      * Checks to see if the provided word can be made capital
      * in a title, given no context to the surrounding words.
-     * <br>
+     * <BR>
      * This method is used it {@link #toTitleCase(String, String)}
      * to calculate whether a word can be capitalized in the title casing.
-     * <br>
+     * <BR>
      * This method only takes into consideration if the statement
      * that the provided word is in was split by spaces.
-     * <br><br>
+     * <BR><BR>
      * The following are the style types:
-     * <ol>
-     *     <li><a href="#sAP">ap</a></li>
-     *     <li><a href="#sCM">cm</a></li>
-     *     <li><a href="#sMLA">mla</a></li>
-     *     <li><a href="#sAPA">apa</a></li>
-     *     <li><a href="#sAMA">ama</a></li>
-     *     <li><a href="#sBB">bb</a></li>
-     *     <li><a href="#sALL">all</a></li>
-     * </ol>
+     * <OL>
+     *     <LI><A href="#sAP">ap</A></LI>
+     *     <LI><A href="#sCM">cm</A></LI>
+     *     <LI><A href="#sMLA">mla</A></LI>
+     *     <LI><A href="#sAPA">apa</A></LI>
+     *     <LI><A href="#sAMA">ama</A></LI>
+     *     <LI><A href="#sBB">bb</A></LI>
+     *     <LI><A href="#sALL">all</A></LI>
+     * </OL>
      *
      * @param word The word to check.
      * @param index The index placement of the word.
@@ -472,7 +472,7 @@ public class StringConvert {
 
     /**
      * Capitalizes a section of a String.
-     * <br>
+     * <BR>
      * Set endIndex to -1 for another way of setting endIndex to {@code string.length()}.
      * Using -1 should be a little faster.
      *
@@ -499,7 +499,7 @@ public class StringConvert {
 
     /**
      * Sends a section of a String into lowercase.
-     * <br>
+     * <BR>
      * Set endIndex to -1 for another way of setting endIndex to {@code string.length()}.
      * Using -1 should be a little faster.
      *
@@ -526,7 +526,7 @@ public class StringConvert {
 
     /**
      * Splits and applies a function to each split segment of a String.
-     * <br>
+     * <BR>
      * So to have parts skipped, i.e., not added, have the function return
      * {@code null}.
      *

@@ -258,35 +258,35 @@ public class XMLProcessor {
 
     /**
      * Loads some XML data to be displayed.
-     * <br><br>
+     * <BR><BR>
      * The available nodes:
      *
-     * <h2>page</h2>
-     * <p>
+     * <H2>page</H2>
+     * <P>
      *     The top level element,
      *     can also be used for defining reusable templates
      *     that can be called for by a call of an inline page tag.
      *     All inline page tags must have a 'path' attribute that represents
      *     the directory to the GA-XML file. The path must be separated using '/',
      *     for example the path must be like "path/to/file.xml".
-     * </p>
-     * <p>
+     * </P>
+     * <P>
      *     Inline pages are defined as a page tag that has the 'type' attribute
      *     set as either "inline" or "inline-notice".
      *     Normal inline has no identifying markings that separate the inline page
      *     from the rest of th page. While, inline-notice makes it so that there
      *     are identifying marks. To add a defined marking (as a text statement)
      *     define the 'notice' attribute otherwise the defined marking is the path.
-     * </p>
+     * </P>
      *
-     * <h2>br</h2>
-     * <p>
+     * <H2>br</H2>
+     * <P>
      *     A line break, can be used to add vertical distance between elements.
      *     Can change space by changing of the 'size' attribute.
-     * </p>
+     * </P>
      *
-     * <h2>hr</h2>
-     * <p>
+     * <H2>hr</H2>
+     * <P>
      *     A horizontal line, can be used to define separation between content.
      *     The line created can be changed in width by setting the 'size' attribute,
      *     by default the size is 4 and the height is 40. The height is set with the
@@ -294,54 +294,54 @@ public class XMLProcessor {
      *     Height is also the amount of space that the hr tag takes up, any space
      *     that isn't taken up by the actual line, is roughly distributed between the
      *     top and bottom of the line, making the line to be centered in the extra space.
-     * </p>
+     * </P>
      *
-     * <h2>p</h2>
-     * <p>
+     * <H2>p</H2>
+     * <P>
      *     The paragraph tag, this tag's main purpose is to state large blocks of
      *     content that should be grouped and kept separate from the content out
      *     side of the tag.
-     * </p>
+     * </P>
      *
-     * <h2>span</h2>
-     * <p>
+     * <H2>span</H2>
+     * <P>
      *     The span tag, like the paragraph tag, is used to group content that
      *     is separate from the rest of the content, but is similar to the content
      *     around it where the tag's content should still remain inline with
      *     the content that is around it. Meaning that the span tag is to separate
      *     content to format.
-     * </p>
+     * </P>
      *
-     * <h2>pre</h2>
-     * <p>
+     * <H2>pre</H2>
+     * <P>
      *     The pre tag is the exact same as the paragraph tag, but doesn't
      *     remove excess space.
-     * </p>
+     * </P>
      *
-     * <h2>variable</h2>
-     * <p>
+     * <H2>variable</H2>
+     * <P>
      *     The variable tag defines a value that can be called by
      *     a var tag.
-     * </p>
+     * </P>
      *
-     * <h2>var</h2>
-     * <p>
+     * <H2>var</H2>
+     * <P>
      *     The var tag is the caller of the content in a variable tag.
-     * </p>
+     * </P>
      *
-     * <h2>math</h2>
-     * <p>
+     * <H2>math</H2>
+     * <P>
      *     The math tag defines an equation that needs to be calculated
      *     displaying the answer to the equation.
-     * </p>
+     * </P>
      *
-     * <h2>script</h2>
-     * <p>
+     * <H2>script</H2>
+     * <P>
      *     The script tag defines JavaScript that can be processed and used
      *     to draw out event calls and functions defined in a script tag
      *     can also be called by var and variable tags given "script." is
      *     provided before the function execution call in the var or variable tag.
-     * </p>
+     * </P>
      *
      * @param xml The XML data to load.
      * @param level How deep the XML data is from the top level of the XML file.

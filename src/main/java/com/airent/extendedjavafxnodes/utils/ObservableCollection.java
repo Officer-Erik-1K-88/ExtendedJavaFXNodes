@@ -69,7 +69,7 @@ public class ObservableCollection<E> extends ObjectPropertyBase<Collection<E>> i
     /**
      * Gets the Collection that is the reference to the collection that is being listened to.
      * Changes to this list will be reflected in the Collection to be observed.
-     * <br><br>
+     * <BR><BR>
      * It is recommended to only use this method if {@link #isSet()} is false.
      * Otherwise, (if {@link #isSet()} is true) this method will be a SequencedSet.
      *

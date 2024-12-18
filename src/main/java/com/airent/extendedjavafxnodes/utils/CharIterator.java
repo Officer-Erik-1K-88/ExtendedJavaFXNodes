@@ -86,7 +86,7 @@ public class CharIterator implements Iterator<Character> {
 
     /**
      * Back tracks to the previous char.
-     * <br>
+     * <BR>
      * This method is the same as {@link #nextChar()},
      * but in reverse.
      */

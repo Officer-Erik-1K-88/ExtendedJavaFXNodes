@@ -18,96 +18,96 @@ public class Convert {
     /**
      * Converts an Object to a different Object based on a given function
      * (Declared as the {@code type} parameter).
-     * <br>
+     * <BR>
      * Any Object that is a CharSequence will be converted into a String.
-     * <br>
-     * <h2>Types</h2>
+     * <BR>
+     * <H2>Types</H2>
      * Some types may have settings.
      * Settings can always be omitted.
-     * <br>
+     * <BR>
      * To add settings to a type, the given type string must be declared
      * as function name, followed by {@code (} (left parentheses),
      * then comma separated values (The settings), and final it must end with
      * {@code )} (right parentheses).
-     * <br>
+     * <BR>
      * The number of settings for each type may differ,
      * you do not need to declare all settings for the type, any setting
      * not declared will have a default value.
-     * <br><br>
+     * <BR><BR>
      * Entry Title Format: type (Object/data types that can use this type)
-     * <br>
+     * <BR>
      * The types are as follows:
-     * <br>
-     * <h4>capitalize (String)</h4>
+     * <BR>
+     * <H4>capitalize (String)</H4>
      * Given that the object is a String,
      * the returned String will have all its letters capitalized.
-     * <br>
+     * <BR>
      * However, this type has two settings, the first setting is
      * the start index of letters to capitalize (inclusive),
      * and the second setting is the end index of letters to
      * capitalize (exclusive).
-     * <hr>
-     * <h4>firstCapital (String)</h4>
+     * <HR>
+     * <H4>firstCapital (String)</H4>
      * Capitalizes the first letter in a String.
-     * <hr>
-     * <h4>title (String)</h4>
+     * <HR>
+     * <H4>title (String)</H4>
      * Gives title casing to the provided string,
      * this type has one setting; this setting is the
      * style rule of the casing.
-     * <br>
+     * <BR>
      * Refer to {@link StringConvert#toTitleCase(String, String)}
      * for more details of how title casing works.
-     * <hr>
-     * <h4>lowerCase (String)</h4>
+     * <HR>
+     * <H4>lowerCase (String)</H4>
      * This is exactly the same as capitalize,
      * but instead of making it upper-casing, it is put into lower casing.
-     * <hr>
-     * <h4>string (Any)</h4>
+     * <HR>
+     * <H4>string (Any)</H4>
      * Converts the object to a string,
      * this type has three settings, the first one is a boolean
      * that refers whether to do a partial conversion (if possible).
-     * <br>
+     * <BR>
      * The second one is the integer value that refers to a placement
      * of the value, the placement is the number of times to repeat
      * the converted String, however, if the value being converted
      * is a number and is set to a partial conversion, then
      * the placement is reference to the number of places to move
      * the end word by.
-     * <br>
+     * <BR>
      * The third one is mainly for a partial numeric conversion,
      * this is used to round the number, if this is set to -1 then
      * no rounding is done, however, if this value is less than
      * -1, then the conversion is just a call of {@link String#valueOf(Object)}.
-     * <br>
+     * <BR>
      * For more information on this type, refer to {@link #toString(Object, boolean, int, int)}.
-     * <hr>
-     * <h4>big (Any)</h4>
+     * <HR>
+     * <H4>big (Any)</H4>
      * Converts an object into a numeric value.
-     * <br>
+     * <BR>
      * Refer to {@link NumberConvert#convertToBig(Object)} for more
      * information on how this type works.
-     * <hr>
-     * <h4>random (String, List, Number)</h4>
+     * <HR>
+     * <H4>random (String, List, Number)</H4>
      * If the provided value is a number,
      * then this type generates a random number where
      * the provided number is the maximum number that can be
      * generated (exclusive).
-     * <br>
+     * <BR>
      * If the provided value is a string, then the string will be
      * randomly jumbled up.
-     * <br>
+     * <BR>
      * If the provided value is a list, then the list will be
      * randomly jumbled up, just like if it was a string.
      * However, the list provided will be left unchanged
      * and a new {@link ArrayList} is created and is where the
      * objects are placed while being jumbled up.
-     * <hr>
-     * <h4>round (Number)</h4>
+     * <HR>
+     * <H4>round (Number)</H4>
      * Rounds a number to the nearest whole
      * number, however, if provided a setting, then the setting is
      * the number of decimal places to leave in.
-     * <hr>
-     * <h4>What if the value isn't stated?</h4>
+     * <HR>
+     * <H4>What if the value isn't stated?</H4>
      * Then it isn't used and falls to no change,
      * or the value is deemed as a call to a Map, List, or JSON objects.
      *
@@ -299,11 +299,11 @@ public class Convert {
     /**
      * Converts an Object to a String value based on three settings
      * that are optimized for numerical conversion factors.
-     * <br><br>
+     * <BR><BR>
      * Partial factor is false.
-     * <br>
+     * <BR>
      * Placement is negated.
-     * <br>
+     * <BR>
      * Rounding is off.
      *
      * @param content The Object to convert into a string.
@@ -316,9 +316,9 @@ public class Convert {
     /**
      * Converts an Object to a String value based on three settings
      * that are optimized for numerical conversion factors.
-     * <br><br>
+     * <BR><BR>
      * Placement is negated.
-     * <br>
+     * <BR>
      * Rounding is off.
      *
      * @param content The Object to convert into a string.
@@ -331,9 +331,9 @@ public class Convert {
     /**
      * Converts an Object to a String value based on three settings
      * that are optimized for numerical conversion factors.
-     * <br><br>
+     * <BR><BR>
      * Partial factor is false.
-     * <br>
+     * <BR>
      * Rounding is off.
      *
      * @param content The Object to convert into a string.
@@ -346,7 +346,7 @@ public class Convert {
     /**
      * Converts an Object to a String value based on three settings
      * that are optimized for numerical conversion factors.
-     * <br><br>
+     * <BR><BR>
      * Rounding is off.
      *
      * @param content The Object to convert into a string.
@@ -360,7 +360,7 @@ public class Convert {
     /**
      * Converts an Object to a String value based on three settings
      * that are optimized for numerical conversion factors.
-     * <br><br>
+     * <BR><BR>
      * Partial factor is false.
      *
      * @param content The Object to convert into a string.
@@ -379,7 +379,7 @@ public class Convert {
      * @param partial Whether to do a partial conversion to string,
      *                this boolean value only applies to the following
      *                types: numerical.
-     *                <br>
+     *                <BR>
      *                For numerical values, if this is {@code true}
      *                then part of the return will remain numerical.
      *                Otherwise, the numerical value will be fully turned
