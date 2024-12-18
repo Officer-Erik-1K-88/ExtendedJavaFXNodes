@@ -16,100 +16,129 @@ import java.util.Random;
 
 public class Convert {
     /**
-     * Converts an Object to a different Object based on a given function
-     * (Declared as the {@code type} parameter).
+     * <P>
+     *     Converts an Object to a different Object based on a given function
+     *     (Declared as the {@code type} parameter).
+     * </P>
+     * <P>
+     *     Any Object that is a CharSequence will be converted into a String.
+     * </P>
+     * <H4>Types</H4>
+     * <P>
+     *     Some types may have settings.
+     *     Settings can always be omitted.
+     * </P>
+     * <P>
+     *     To add settings to a type, the given type string must be declared
+     *     as function name, followed by {@code (} (left parentheses),
+     *     then comma separated values (The settings), and final it must end with
+     *     {@code )} (right parentheses).
+     * </P>
+     * <P>
+     *     The number of settings for each type may differ,
+     *     you do not need to declare all settings for the type, any setting
+     *     not declared will have a default value.
+     * </P>
      * <BR>
-     * Any Object that is a CharSequence will be converted into a String.
-     * <BR>
-     * <H2>Types</H2>
-     * Some types may have settings.
-     * Settings can always be omitted.
-     * <BR>
-     * To add settings to a type, the given type string must be declared
-     * as function name, followed by {@code (} (left parentheses),
-     * then comma separated values (The settings), and final it must end with
-     * {@code )} (right parentheses).
-     * <BR>
-     * The number of settings for each type may differ,
-     * you do not need to declare all settings for the type, any setting
-     * not declared will have a default value.
-     * <BR><BR>
-     * Entry Title Format: type (Object/data types that can use this type)
-     * <BR>
-     * The types are as follows:
-     * <BR>
-     * <H4>capitalize (String)</H4>
-     * Given that the object is a String,
-     * the returned String will have all its letters capitalized.
-     * <BR>
-     * However, this type has two settings, the first setting is
-     * the start index of letters to capitalize (inclusive),
-     * and the second setting is the end index of letters to
-     * capitalize (exclusive).
+     * <P>
+     *     Entry Title Format: type (Object/data types that can use this type)
+     * </P>
+     * <P>The types are as follows:</P>
+     * <H5>capitalize (String)</H5>
+     * <P>
+     *     Given that the object is a String,
+     *     the returned String will have all its letters capitalized.
+     * </P>
+     * <P>
+     *     However, this type has two settings, the first setting is
+     *     the start index of letters to capitalize (inclusive),
+     *     and the second setting is the end index of letters to
+     *     capitalize (exclusive).
+     * </P>
      * <HR>
-     * <H4>firstCapital (String)</H4>
-     * Capitalizes the first letter in a String.
+     * <H5>firstCapital (String)</H5>
+     * <P>Capitalizes the first letter in a String.</P>
      * <HR>
-     * <H4>title (String)</H4>
-     * Gives title casing to the provided string,
-     * this type has one setting; this setting is the
-     * style rule of the casing.
-     * <BR>
-     * Refer to {@link StringConvert#toTitleCase(String, String)}
-     * for more details of how title casing works.
+     * <H5>title (String)</H5>
+     * <P>
+     *     Gives title casing to the provided string,
+     *     this type has one setting; this setting is the
+     *     style rule of the casing.
+     * </P>
+     * <P>
+     *     Refer to {@link StringConvert#toTitleCase(String, String)}
+     *     for more details of how title casing works.
+     * </P>
      * <HR>
-     * <H4>lowerCase (String)</H4>
-     * This is exactly the same as capitalize,
-     * but instead of making it upper-casing, it is put into lower casing.
+     * <H5>lowerCase (String)</H5>
+     * <P>
+     *     This is exactly the same as capitalize,
+     *     but instead of making it upper-casing, it is put into lower casing.
+     * </P>
      * <HR>
-     * <H4>string (Any)</H4>
-     * Converts the object to a string,
-     * this type has three settings, the first one is a boolean
-     * that refers whether to do a partial conversion (if possible).
-     * <BR>
-     * The second one is the integer value that refers to a placement
-     * of the value, the placement is the number of times to repeat
-     * the converted String, however, if the value being converted
-     * is a number and is set to a partial conversion, then
-     * the placement is reference to the number of places to move
-     * the end word by.
-     * <BR>
-     * The third one is mainly for a partial numeric conversion,
-     * this is used to round the number, if this is set to -1 then
-     * no rounding is done, however, if this value is less than
-     * -1, then the conversion is just a call of {@link String#valueOf(Object)}.
-     * <BR>
-     * For more information on this type, refer to {@link #toString(Object, boolean, int, int)}.
+     * <H5>string (Any)</H5>
+     * <P>
+     *     Converts the object to a string,
+     *     this type has three settings, the first one is a boolean
+     *     that refers whether to do a partial conversion (if possible).
+     * </P>
+     * <P>
+     *     The second one is the integer value that refers to a placement
+     *     of the value, the placement is the number of times to repeat
+     *     the converted String, however, if the value being converted
+     *     is a number and is set to a partial conversion, then
+     *     the placement is reference to the number of places to move
+     *     the end word by.
+     * </P>
+     * <P>
+     *     The third one is mainly for a partial numeric conversion,
+     *     this is used to round the number, if this is set to -1 then
+     *     no rounding is done, however, if this value is less than
+     *     -1, then the conversion is just a call of {@link String#valueOf(Object)}.
+     * </P>
+     * <P>
+     *     For more information on this type,
+     *     refer to {@link #toString(Object, boolean, int, int)}.
+     * </P>
      * <HR>
-     * <H4>big (Any)</H4>
-     * Converts an object into a numeric value.
-     * <BR>
-     * Refer to {@link NumberConvert#convertToBig(Object)} for more
-     * information on how this type works.
+     * <H5>big (Any)</H5>
+     * <P>Converts an object into a numeric value.</P>
+     * <P>
+     *     Refer to {@link NumberConvert#convertToBig(Object)} for more
+     *     information on how this type works.
+     * </P>
      * <HR>
-     * <H4>random (String, List, Number)</H4>
-     * If the provided value is a number,
-     * then this type generates a random number where
-     * the provided number is the maximum number that can be
-     * generated (exclusive).
-     * <BR>
-     * If the provided value is a string, then the string will be
-     * randomly jumbled up.
-     * <BR>
-     * If the provided value is a list, then the list will be
-     * randomly jumbled up, just like if it was a string.
-     * However, the list provided will be left unchanged
-     * and a new {@link ArrayList} is created and is where the
-     * objects are placed while being jumbled up.
+     * <H5>random (String, List, Number)</H5>
+     * <P>
+     *     If the provided value is a number,
+     *     then this type generates a random number where
+     *     the provided number is the maximum number that can be
+     *     generated (exclusive).
+     * </P>
+     * <P>
+     *     If the provided value is a string, then the string will be
+     *     randomly jumbled up.
+     * </P>
+     * <P>
+     *     If the provided value is a list, then the list will be
+     *     randomly jumbled up, just like if it was a string.
+     *     However, the list provided will be left unchanged
+     *     and a new {@link ArrayList} is created and is where the
+     *     objects are placed while being jumbled up.
+     * </P>
      * <HR>
-     * <H4>round (Number)</H4>
-     * Rounds a number to the nearest whole
-     * number, however, if provided a setting, then the setting is
-     * the number of decimal places to leave in.
+     * <H5>round (Number)</H5>
+     * <P>
+     *     Rounds a number to the nearest whole
+     *     number, however, if provided a setting, then the setting is
+     *     the number of decimal places to leave in.
+     * </P>
      * <HR>
-     * <H4>What if the value isn't stated?</H4>
-     * Then it isn't used and falls to no change,
-     * or the value is deemed as a call to a Map, List, or JSON objects.
+     * <H5>What if the value isn't stated?</H5>
+     * <P>
+     *     Then it isn't used and falls to no change,
+     *     or the value is deemed as a call to a Map, List, or JSON objects.
+     * </P>
      *
      * @param type The functional conversion declaration to apply to object.
      * @param object The object to convert.

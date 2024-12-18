@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 /**
- * The StringConvert class is a container for String handling.
+ * <P>The StringConvert class is a container for String handling.</P>
  *
- * <H1 id="title">Title</H1>
+ * <H2 id="title">Title</H2>
  * <P>
  *     The information for all things related to title casing.
  * </P>
- * <H2 id="titleStyles">Styles</H2>
- * Information about the style types allowed for title casing.
+ * <H3 id="titleStyles">Styles</H3>
+ * <P>Information about the style types allowed for title casing.</P>
  * <H4>Same across all types</H4>
  * <P>
  *     Most style guides recommend capitalizing
@@ -46,7 +46,7 @@ import java.util.function.BiFunction;
  *     "but," "and," "nor," "or," "for," "so," "as," "if," and "yet"
  *     are to not be capitalized unless they are the first or last word in a title.
  * </P>
- * The following are the style types:
+ * <P>The following are the style types:</P>
  * <BR>
  * <H4 id="sAP">ap - The Associated Press Stylebook</H4>
  * <P>Capitalize the first and last words.</P>
@@ -278,20 +278,25 @@ public class StringConvert {
     );
 
     /**
-     * Gives <A href="#title">title casing</A> to a given string.
+     * <P>Gives <A href="#title">title casing</A> to a given string.</P>
      *
-     * <BR><BR>
-     * Each of the following is how this method splits the statement
-     * for title casing:
-     * (What is removed during the splitting process is added back.)
      * <BR>
-     * Firstly is the period (.), then the question mark (?),
-     * then the exclamation mark (!), then the colon (:),
-     * then the semicolon (;), and finally, to get each word,
-     * it is split by the space.
+     * <P>
+     *     Each of the following is how this method splits the statement
+     *     for title casing:
+     *     (What is removed during the splitting process is added back.)
+     * </P>
+     * <P>
+     *     Firstly is the period (.), then the question mark (?),
+     *     then the exclamation mark (!), then the colon (:),
+     *     then the semicolon (;), and finally, to get each word,
+     *     it is split by the space.
+     * </P>
      *
-     * <BR><BR>
-     * The following are the allowed style types:
+     * <BR>
+     * <P>
+     *     The following are the allowed style types:
+     * </P>
      * <OL>
      *     <LI><A href="#sAP">ap</A></LI>
      *     <LI><A href="#sCM">cm</A></LI>
@@ -351,16 +356,20 @@ public class StringConvert {
     }
 
     /**
-     * Checks to see if the provided word can be made capital
-     * in a title, given no context to the surrounding words.
+     * <P>
+     *     Checks to see if the provided word can be made capital
+     *     in a title, given no context to the surrounding words.
+     * </P>
+     * <P>
+     *     This method is used it {@link #toTitleCase(String, String)}
+     *     to calculate whether a word can be capitalized in the title casing.
+     * </P>
+     * <P>
+     *     This method only takes into consideration if the statement
+     *     that the provided word is in was split by spaces.
+     * </P>
      * <BR>
-     * This method is used it {@link #toTitleCase(String, String)}
-     * to calculate whether a word can be capitalized in the title casing.
-     * <BR>
-     * This method only takes into consideration if the statement
-     * that the provided word is in was split by spaces.
-     * <BR><BR>
-     * The following are the style types:
+     * <P>The following are the style types:</P>
      * <OL>
      *     <LI><A href="#sAP">ap</A></LI>
      *     <LI><A href="#sCM">cm</A></LI>
@@ -471,10 +480,11 @@ public class StringConvert {
     }
 
     /**
-     * Capitalizes a section of a String.
-     * <BR>
-     * Set endIndex to -1 for another way of setting endIndex to {@code string.length()}.
-     * Using -1 should be a little faster.
+     * <P>Capitalizes a section of a String.</P>
+     * <P>
+     *     Set endIndex to -1 for another way of setting endIndex to {@code string.length()}.
+     *     Using -1 should be a little faster.
+     * </P>
      *
      * @param string The string to capitalize.
      * @param startIndex The index at witch capitalization should begin. (inclusive)
@@ -498,10 +508,11 @@ public class StringConvert {
     }
 
     /**
-     * Sends a section of a String into lowercase.
-     * <BR>
-     * Set endIndex to -1 for another way of setting endIndex to {@code string.length()}.
-     * Using -1 should be a little faster.
+     * <P>Sends a section of a String into lowercase.</P>
+     * <P>
+     *     Set endIndex to -1 for another way of setting endIndex to {@code string.length()}.
+     *     Using -1 should be a little faster.
+     * </P>
      *
      * @param string The string to make into lowercase.
      * @param startIndex The index at witch lowercase should begin. (inclusive)
@@ -525,10 +536,11 @@ public class StringConvert {
     }
 
     /**
-     * Splits and applies a function to each split segment of a String.
-     * <BR>
-     * So to have parts skipped, i.e., not added, have the function return
-     * {@code null}.
+     * <P>Splits and applies a function to each split segment of a String.</P>
+     * <P>
+     *     So to have parts skipped, i.e., not added, have the function return
+     *     {@code null}.
+     * </P>
      *
      * @param string The string to split.
      * @param splitter The String value that is used to split the
