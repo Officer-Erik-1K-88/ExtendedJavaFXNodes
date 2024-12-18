@@ -2,17 +2,17 @@ package test;
 
 import com.airent.extendedjavafxnodes.control.Alert;
 import com.airent.extendedjavafxnodes.control.FilePicker;
-import com.airent.extendedjavafxnodes.control.TutorialContent;
-import com.airent.extendedjavafxnodes.gaxml.XMLProcessor;
+import com.airent.extendedjavafxnodes.control.tutorial.TutorialContent;
+import com.airent.extendedjavafxnodes.control.tutorial.TutorialPopup;
 import com.airent.extendedjavafxnodes.gaxml.themes.Light;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class HelloApplication extends Application {
     @Override
@@ -25,12 +25,14 @@ public class HelloApplication extends Application {
         if (scene.getRoot() instanceof VBox vBox) {
             FilePicker filePicker = new FilePicker();
             TutorialContent tutorialContent = new TutorialContent();
-            tutorialContent.addSlide("Page 1", null, HelloApplication.class.getResource("Page1.xml"), new Light());
-            vBox.getChildren().addAll(filePicker, tutorialContent);
+            tutorialContent.addSlide("Page 1", null, HelloApplication.class.getResource("Page1.xml"), new Light(), filePicker);
+            TutorialPopup tutorialPopup = new TutorialPopup();
+            tutorialPopup.addTutorial("Test", tutorialContent);
+            Button displayTut = new Button("Display Tutorial");
+            displayTut.setOnAction(event -> tutorialPopup.show());
+            vBox.getChildren().addAll(filePicker, displayTut);
         }
-        Alert.textAlert("Test", "This is a test.", "Looking at the body text here.");
-        Alert alert = new Alert(Alert.AlertType.PROMPT, "Test", "This is a Test.", "test test test test test test test test test test.");
-        alert.show();
+
         stage.show();
     }
 

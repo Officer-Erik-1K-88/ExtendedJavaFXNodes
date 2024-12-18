@@ -1,4 +1,4 @@
-package com.airent.extendedjavafxnodes.control;
+package com.airent.extendedjavafxnodes.control.tutorial;
 
 import com.airent.extendedjavafxnodes.gaxml.Attributes;
 import com.airent.extendedjavafxnodes.gaxml.XMLProcessor;
@@ -27,31 +27,22 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.List;
 
-public class TutorialContent extends VBox {
+public class TutorialContent {
     private final ImageView imageView;
     private final VBox textContent;
     private final Button next;
     private final Button previous;
     private final Label flowCounter;
 
+    Runnable onClose = null;
+    Runnable onChange = null;
+
     private int current = 0;
 
     private final ListMap<String, TutorialInfo> info = new ListMap<>();
+    private final List<Node> nodes;
 
     public TutorialContent() {
-        super(6);
-        setFillWidth(true);
-        setAlignment(Pos.TOP_CENTER);
-        setPrefWidth(300);
-        setMaxWidth(300);
-        BorderStroke borderStroke = new BorderStroke(
-                Color.BLACK,
-                BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY,
-                new BorderWidths(2));
-        Border border = new Border(borderStroke);
-        setBorder(border);
-        setPadding(new Insets(10));
 
         imageView = new ImageView();
 
@@ -78,12 +69,28 @@ public class TutorialContent extends VBox {
         separator.setMinHeight(16);
         separator.setPrefHeight(30);
 
-        getChildren().addAll(imageView, textContent, separator, hBox);
+        nodes = List.of(imageView, textContent, separator, hBox);
     }
 
-    public final void addSlide(String title, Image image, URL url, Theme theme) {
-        info.put(title, new TutorialInfo(title, image, url, theme));
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    public final void addSlide(String title, Image image, URL url, Theme theme, Node linkedNode) {
+        info.put(title, new TutorialInfo(title, image, url, theme, linkedNode));
         updateContent();
+    }
+
+    public final TutorialInfo getSlide(String title) {
+        return info.get(title);
+    }
+
+    public final TutorialInfo getSlide(int index) {
+        return info.getValue(index);
+    }
+
+    public final TutorialInfo getCurrentSlide() {
+        return getSlide(current);
     }
 
     public final void updateFlowCounter() {
@@ -112,9 +119,12 @@ public class TutorialContent extends VBox {
             imageView.setImage(null);
             textContent.getChildren().clear();
         } else {
-            TutorialInfo tutorialInfo = info.getValue(current);
+            TutorialInfo tutorialInfo = getCurrentSlide();
             imageView.setImage(tutorialInfo.getImage());
             textContent.getChildren().addAll(tutorialInfo.load());
+            if (onChange != null) {
+                onChange.run();
+            }
         }
         updateFlowCounter();
     }
@@ -123,8 +133,10 @@ public class TutorialContent extends VBox {
         if (current + 1 < info.size()) {
             updateContent(current+1);
         } else {
-            setVisible(false);
             current = 0;
+            if (onClose != null) {
+                onClose.run();
+            }
         }
     }
     public final void proceedToPrevious(ActionEvent event) {
@@ -153,11 +165,14 @@ public class TutorialContent extends VBox {
         private final URL url;
         private Theme theme;
 
-        public TutorialInfo(String title, Image image, URL url, Theme theme) {
+        private final Node linkedNode;
+
+        public TutorialInfo(String title, Image image, URL url, Theme theme, Node linkedNode) {
             this.title = title;
             this.image = image;
             this.url = url;
             this.theme = theme;
+            this.linkedNode = linkedNode;
         }
 
         public String getTitle() {
@@ -182,6 +197,10 @@ public class TutorialContent extends VBox {
 
         public void setTheme(Theme theme) {
             this.theme = theme;
+        }
+
+        public Node getLinkedNode() {
+            return linkedNode;
         }
 
         private List<Node> load() {
