@@ -1,42 +1,52 @@
 package com.airent.extendedjavafxnodes.control.tutorial;
 
+import com.airent.extendedjavafxnodes.gaxml.themes.Light;
+import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.utils.ListMap;
+import com.airent.extendedjavafxnodes.utils.Pair;
 import javafx.event.ActionEvent;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
+import javafx.stage.Window;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TutorialNode<T extends SlideInfo> extends VBox {
-    private final Tooltip popup;
+public abstract class TutorialNode<T extends SlideInfo> extends VBox implements SlideInfo {
+    private final TutorialPopup popup;
     private final Label flowCounter;
     private final Button next;
     private final Button previous;
+
+    //private final Shape leftArrow;
+    //private final Shape rightArrow;
+    //private final Shape topArrow;
+    //private final Shape BottomArrow;
 
     private final ImageView imageView;
     private final VBox content;
@@ -45,16 +55,28 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
 
     private final ListMap<String, T> slides = new ListMap<>();
     private int current = 0;
+    private boolean isSlide = false;
+    private final Image image;
 
     public TutorialNode() {
+        this(null);
+    }
+
+    public TutorialNode(Image image) {
         super(6);
+        this.image = image;
+
         setAlignment(Pos.TOP_CENTER);
         setFillWidth(true);
-        setPrefWidth(300);
+        //setPrefWidth(300);
         setMaxWidth(300);
 
-        Button close = new Button("X");
-        close.setFont(new Font(24));
+        updateTheme(this);
+
+        Hyperlink close = new Hyperlink("X");
+        close.setFont(new Font(20));
+        //close.setPadding(new Insets(2));
+        close.setBorder(Border.EMPTY);
         close.setOnAction(event -> hide());
         HBox closeHolder = new HBox(close);
         closeHolder.setAlignment(Pos.TOP_RIGHT);
@@ -83,7 +105,7 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
         content = new VBox(noContent);
         content.setFillWidth(true);
         content.setAlignment(Pos.TOP_CENTER);
-        content.setPrefWidth(300);
+        //content.setPrefWidth(300);
         content.setMaxWidth(300);
 
         VBox vBox = new VBox(imageView, content);
@@ -91,63 +113,84 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
 
         getChildren().addAll(closeHolder, title, vBox, separator, flowHolder);
 
-        popup = new Tooltip();
+        popup = new TutorialPopup(this);
     }
 
     private void setVBox(@NotNull VBox vBox) {
         vBox.setSpacing(6);
         vBox.setFillWidth(true);
         vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setPrefWidth(300);
+        //vBox.setPrefWidth(300);
         vBox.setMaxWidth(300);
-        BorderStroke borderStroke = new BorderStroke(
-                Color.BLACK,
-                BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY,
-                new BorderWidths(2));
-        Border border = new Border(borderStroke);
-        vBox.setBorder(border);
+        updateTheme(vBox);
         vBox.setPadding(new Insets(10));
     }
 
-    private void updateTheme(List<Node> nodes) {
-        for (Node node : nodes) {
-            if (node instanceof Parent parent) {
-                if (parent instanceof Region region) {
-                    Border border = region.getBorder();
-                    List<BorderStroke> borderStrokes = new ArrayList<>();
-                    for (BorderStroke borderStroke : border.getStrokes()) {
-                        Paint bottom = getCurrentSlide().getTheme().mixSecondary(borderStroke.getBottomStroke()).getActual();
-                        Paint top = getCurrentSlide().getTheme().mixSecondary(borderStroke.getTopStroke()).getActual();
-                        Paint left = getCurrentSlide().getTheme().mixSecondary(borderStroke.getLeftStroke()).getActual();
-                        Paint right = getCurrentSlide().getTheme().mixSecondary(borderStroke.getRightStroke()).getActual();
-                        borderStrokes.add(new BorderStroke(
-                                top, right, bottom, left,
-                                borderStroke.getTopStyle(),
-                                borderStroke.getRightStyle(),
-                                borderStroke.getBottomStyle(),
-                                borderStroke.getLeftStyle(),
-                                borderStroke.getRadii(),
-                                borderStroke.getWidths(),
-                                borderStroke.getInsets()));
-                    }
-                    border = new Border(borderStrokes, border.getImages());
-                    region.setBorder(border);
-                    if (parent instanceof Pane pane) {
-                        updateTheme(pane.getChildren());
-                    } else if (parent instanceof Control control) {
-                        if (control instanceof Labeled labeled) {
-
-                        }
-                    }
-                }
-            } else if (node instanceof Shape shape) {}
+    private void updateTheme(Node node) {
+        Theme theme = getTheme();
+        boolean allowBorder = true;
+        if (node instanceof TutorialNode<?> tutorialNode) {
+            allowBorder = !tutorialNode.isSlide;
+        }
+        if (node instanceof Region region) {
+            if (allowBorder) {
+                BorderStroke borderStroke = new BorderStroke(
+                        theme.getSecondary(),
+                        BorderStrokeStyle.SOLID,
+                        CornerRadii.EMPTY,
+                        new BorderWidths(2));
+                Border border = new Border(borderStroke);
+                region.setBorder(border);
+            } else {
+                region.setBorder(Border.EMPTY);
+            }
+            region.setBackground(new Background(new BackgroundFill(
+                    theme.getPrimary(),
+                    null,
+                    null)));
         }
     }
 
-    public final void addSlide(String name, T slide) {
-        onSlideAdd(slide);
+    private List<Node> singleListOfSelf = null;
+
+    @Override
+    public List<Node> getDescription() {
+        if (singleListOfSelf == null) {
+            singleListOfSelf = List.of(this);
+        }
+        return singleListOfSelf;
+    }
+
+    @Override
+    public Theme getTheme() {
+        T slide = getCurrentSlide();
+        if (slide == null) return defaultTheme();
+        return slide.getTheme();
+    }
+
+    public abstract Theme defaultTheme();
+
+    @Override
+    public Image getImage() {
+        return image;
+    }
+
+    @Override
+    public Node getLinkedNode() {
+        T slide = getCurrentSlide();
+        if (slide == null) return null;
+        return slide.getLinkedNode();
+    }
+
+    public final void addSlide(String name, @NotNull T slide) {
+        if (slide.getLinkedNode() == null) {
+            throw new RuntimeException("Cannot have a slide with no linked node,");
+        }
         slides.put(name, slide);
+        if (slide instanceof TutorialNode<?> tutorialNode) {
+            tutorialNode.isSlide = true;
+            tutorialNode.setBorder(Border.EMPTY);
+        }
         updateContent();
     }
 
@@ -156,6 +199,7 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
     }
 
     public final T getSlide(int index) {
+        if (slides.isEmpty()) return null;
         return slides.getValue(index);
     }
 
@@ -186,16 +230,26 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
 
     public final void updateContent() {
         content.getChildren().clear();
+        Theme theme = getTheme();
         if (!slides.isEmpty()) {
             T currentSlide = getCurrentSlide();
+            if (currentSlide instanceof TutorialNode<?> tutorialNode) {
+                updateTheme(tutorialNode);
+            }
             imageView.setImage(currentSlide.getImage());
             content.getChildren().addAll(currentSlide.getDescription());
-            title.setText(slides.getKey(current)+": "+currentSlide.getTitle());
+            title.setText(this.getTitle()+": "+currentSlide.getTitle());
         } else {
+            imageView.setImage(null);
             title.setText("None:");
             content.getChildren().add(noContent);
         }
+        updateTheme(content.getParent());
+
         updateFlowCounter();
+        if (popup.isShowing()) {
+            show();
+        }
     }
 
     public final void proceedToNext(ActionEvent event) {
@@ -204,6 +258,7 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
         } else {
             current = 0;
             hide();
+            updateContent();
         }
     }
     public final void proceedToPrevious(ActionEvent event) {
@@ -212,7 +267,138 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox {
         }
     }
 
-    protected abstract void onSlideAdd(T slide);
+    private void showArrow() {
+        if (location.equals("left")) {
 
-    public void hide() {}
+        } else if (location.equals("right")) {
+
+        } else if (location.equals("top")) {
+
+        } else if (location.equals("bottom")) {
+
+        }
+    }
+
+    public void hide() {
+        popup.hide();
+        popup.setMaxWidth(300);
+        popup.setMaxHeight(-1);
+    }
+    public void show() {
+        Node linkedNode = getCurrentSlide().getLinkedNode();
+        Scene scene = linkedNode.getScene();
+        if (scene != null) {
+            if (scene.getWindow() == null) {
+                throw new RuntimeException("The linked node isn't in a scene that has a window.");
+            }
+        } else {
+            throw new RuntimeException("The linked node doesn't have a scene.");
+        }
+        popup.show(scene.getWindow());
+        popup.hide();
+
+        double width = this.getLayoutBounds().getWidth();
+        double height = this.getLayoutBounds().getHeight();
+        if (scene.getWidth() <= (width+25)) {
+            width = width/2;
+            if (scene.getWidth() <= width) {
+                width = scene.getWidth()-10;
+            }
+            if (width < 10) width = 10;
+            popup.setMaxWidth(width);
+        }
+        if (scene.getHeight() <= (height+25)) {
+            height = height/2;
+            if (scene.getWidth() <= height) {
+                height = scene.getHeight()-10;
+            }
+            if (height < 10) height = 10;
+            popup.setMaxHeight(height);
+        }
+
+        positionPopup(linkedNode, width, height);
+        System.out.println("AnchorX: "+anchorX);
+        System.out.println("AnchorY: "+anchorY);
+        popup.show(linkedNode, anchorX, anchorY);
+    }
+
+    private double anchorX = 0;
+    private double anchorY = 0;
+    private String location = "center";
+
+    private void positionPopup(Node node, double popupWidth, double popupHeight) {
+        double gap = 4;
+
+        // Get the window where the node resides
+        Window window = node.getScene().getWindow();
+
+        // Get the bounds of the node relative to the screen
+        Bounds nodeBounds = node.localToScreen(node.getBoundsInLocal());
+
+        // Calculate space around the node
+        double windowWidth = window.getWidth();
+        double windowHeight = window.getHeight();
+        double windowX = window.getX();
+        double windowY = window.getY();
+
+        double nodeRight = nodeBounds.getMaxX();
+        double nodeLeft = nodeBounds.getMinX();
+        double nodeTop = nodeBounds.getMinY();
+        double nodeBottom = nodeBounds.getMaxY();
+        double nodeCenterX = (nodeLeft + nodeRight) / 2;
+        double nodeCenterY = (nodeTop + nodeBottom) / 2;
+
+        double spaceToRight = windowX + windowWidth - nodeRight;
+        double spaceToLeft = nodeLeft - windowX;
+        double spaceToBottom = windowY + windowHeight - nodeBottom;
+        double spaceToTop = nodeTop - windowY;
+
+        double popupX, popupY;
+
+        // Position the popup
+
+        // vertical positioning (Can be override if horizontal position is center of node)
+        popupY = nodeCenterY - (popupHeight / 2);
+
+        // horizontal positioning
+        if (spaceToRight >= popupWidth + gap) {
+            // Align to the right of the node if there's space
+            popupX = nodeRight + gap;
+            location = "right";
+        } else if (spaceToLeft >= popupWidth + gap) {
+            // Align to the left of the node if there's space
+            popupX = nodeLeft - popupWidth - gap;
+            location = "left";
+        } else {
+            if (spaceToBottom >= popupHeight + gap) {
+                // Align to the bottom of the node if there's space
+                popupY = nodeBottom + gap;
+                // Center horizontally to the node
+                popupX = nodeCenterX - (popupWidth / 2);
+                location = "bottom";
+            } else if (spaceToTop >= popupHeight + gap) {
+                // Align to the top of the node if there's space
+                popupY = nodeTop - popupHeight - gap;
+                // Center horizontally to the node
+                popupX = nodeCenterX - (popupWidth / 2);
+                location = "top";
+            } else {
+                // Center horizontally in the window
+                popupX = windowX + (windowWidth - popupWidth) / 2;
+                // Center vertically in the window
+                popupY = windowY + (windowHeight - popupHeight) / 2;
+                location = "center";
+            }
+        }
+
+        // Ensure the popup does not go off the screen horizontally
+        popupX = Math.max(windowX, Math.min(popupX, windowX + windowWidth - popupWidth));
+
+        // Ensure the popup does not go off the screen vertically
+        popupY = Math.max(windowY, Math.min(popupY, windowY + windowHeight - popupHeight));
+
+        // Set the popup position
+        anchorX = popupX;
+        anchorY = popupY;
+    }
 }

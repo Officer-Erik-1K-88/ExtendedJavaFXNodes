@@ -15,6 +15,12 @@ public abstract class Theme implements Named {
         this.tertiary = tertiary;
     }
 
+    protected Theme(Paint primary, Paint secondary, Paint tertiary) {
+        this.primary = new Color(primary);
+        this.secondary = new Color(secondary);
+        this.tertiary = new Color(tertiary);
+    }
+
     public final Paint getPrimary() {
         return primary.getActual();
     }
@@ -56,5 +62,11 @@ public abstract class Theme implements Named {
     public Color mixTertiary(Paint paint) {
         return Color.mix(tertiary, paint);
     }
+
+    /* *************************************************************************
+     *                                                                         *
+     * Themes                                                                  *
+     *                                                                         *
+     **************************************************************************/
 
 }

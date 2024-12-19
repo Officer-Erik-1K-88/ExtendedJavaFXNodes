@@ -5,6 +5,7 @@ import com.airent.extendedjavafxnodes.control.FilePicker;
 import com.airent.extendedjavafxnodes.control.tutorial.TutorialContent;
 import com.airent.extendedjavafxnodes.control.tutorial.TutorialPopup;
 import com.airent.extendedjavafxnodes.gaxml.themes.Light;
+import com.airent.extendedjavafxnodes.shape.Arrow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,13 +25,15 @@ public class HelloApplication extends Application {
 
         if (scene.getRoot() instanceof VBox vBox) {
             FilePicker filePicker = new FilePicker();
-            TutorialContent tutorialContent = new TutorialContent();
-            tutorialContent.addSlide("Page 1", null, HelloApplication.class.getResource("Page1.xml"), new Light(), filePicker);
-            TutorialPopup tutorialPopup = new TutorialPopup();
-            tutorialPopup.addTutorial("Test", tutorialContent);
+            TutorialContent tutorialContent = new TutorialContent("Test");
+            tutorialContent.addSlide("File Picker", null, HelloApplication.class.getResource("Page1.xml"), new Light(), filePicker);
+
             Button displayTut = new Button("Display Tutorial");
-            displayTut.setOnAction(event -> tutorialPopup.show());
-            vBox.getChildren().addAll(filePicker, displayTut);
+            tutorialContent.addSlide("Display Button", null, HelloApplication.class.getResource("Page1.xml"), new Light(), displayTut);
+
+            displayTut.setOnAction(event -> tutorialContent.show());
+
+            vBox.getChildren().addAll(filePicker, displayTut, new Arrow(-80, 80));
         }
 
         stage.show();

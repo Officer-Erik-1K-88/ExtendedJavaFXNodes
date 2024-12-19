@@ -25,4 +25,5 @@ module com.airent.extendedjavafxnodes {
     exports com.airent.extendedjavafxnodes.gaxml.story;
     exports com.airent.extendedjavafxnodes.control.tutorial;
     opens com.airent.extendedjavafxnodes.control.tutorial to javafx.fxml;
+    exports com.airent.extendedjavafxnodes.shape;
 }
