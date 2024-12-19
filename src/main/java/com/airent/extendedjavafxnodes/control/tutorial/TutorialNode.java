@@ -2,6 +2,7 @@ package com.airent.extendedjavafxnodes.control.tutorial;
 
 import com.airent.extendedjavafxnodes.gaxml.themes.Light;
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
+import com.airent.extendedjavafxnodes.shape.Arrow;
 import com.airent.extendedjavafxnodes.utils.ListMap;
 import com.airent.extendedjavafxnodes.utils.Pair;
 import javafx.event.ActionEvent;
@@ -43,10 +44,10 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
     private final Button next;
     private final Button previous;
 
-    //private final Shape leftArrow;
-    //private final Shape rightArrow;
-    //private final Shape topArrow;
-    //private final Shape BottomArrow;
+    private final Arrow leftArrow;
+    private final Arrow rightArrow;
+    private final Arrow topArrow;
+    private final Arrow bottomArrow;
 
     private final ImageView imageView;
     private final VBox content;
@@ -64,6 +65,11 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
 
     public TutorialNode(Image image) {
         super(6);
+        this.rightArrow = new Arrow(40, 40);
+        this.leftArrow = new Arrow(40, 40);
+        this.topArrow = new Arrow(40, 40);
+        this.bottomArrow = new Arrow(40, 40);
+
         this.image = image;
 
         setAlignment(Pos.TOP_CENTER);

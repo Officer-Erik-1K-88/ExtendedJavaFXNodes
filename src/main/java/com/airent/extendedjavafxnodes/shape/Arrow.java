@@ -1,11 +1,16 @@
 package com.airent.extendedjavafxnodes.shape;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ClosePath;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
+
+import java.util.ArrayList;
 
 public class Arrow extends Path {
     private static final double defaultArrowHeadSize = 5.0;
@@ -15,6 +20,42 @@ public class Arrow extends Path {
         super();
         setStroke(Color.BLACK);
         setFill(Color.BLACK);
+
+        update(startX, startY, endX, endY, size, arrowHeadSize);
+    }
+
+    public Arrow(double startX, double startY, double endX, double endY, double size){
+        this(startX, startY, endX, endY, size, defaultArrowHeadSize);
+    }
+
+    public Arrow(double startX, double startY, double endX, double endY) {
+        this(startX, startY, endX, endY, defaultSize);
+    }
+
+    public Arrow(double width, double size) {
+        this(0, 0, width, 0, size);
+    }
+
+    public void update(double startX, double startY, double endX, double endY, double size, double arrowHeadSize) {
+        this.startX.noFireSet(startX);
+        this.startY.noFireSet(startY);
+        this.endX.noFireSet(endX);
+        this.endY.noFireSet(endY);
+        this.size.noFireSet(size);
+        this.arrowHeadSize.noFireSet(arrowHeadSize);
+
+        build();
+    }
+
+    private void build() {
+        double startX = getStartX();
+        double startY = getStartY();
+        double endX = getEndX();
+        double endY = getEndY();
+        double size = getSize();
+        double arrowHeadSize = getArrowHeadSize();
+
+        getElements().clear();
 
         if (size == 0) {
             // Width
@@ -107,21 +148,241 @@ public class Arrow extends Path {
             getElements().add(new LineTo(rectEndLeftX, rectEndLeftY)); // Close the arrowhead
         }
         getElements().add(new ClosePath());
-    }
 
-    public Arrow(double startX, double startY, double endX, double endY, double size){
-        this(startX, startY, endX, endY, size, defaultArrowHeadSize);
-    }
-
-    public Arrow(double startX, double startY, double endX, double endY) {
-        this(startX, startY, endX, endY, defaultSize);
-    }
-
-    public Arrow(double width, double size) {
-        this(0, 0, width, 0, size);
+        this.startX.noFireSet(startX);
+        this.startY.noFireSet(startY);
+        this.endX.noFireSet(endX);
+        this.endY.noFireSet(endY);
+        this.size.noFireSet(size);
+        this.arrowHeadSize.noFireSet(arrowHeadSize);
     }
 
     private double keepSteadySE(double s, double e, double size) {
         return s+(Math.abs(s)==size?(s<0?-4+e:4+e):0);
+    }
+
+    /* *************************************************************************
+     *                                                                         *
+     * Properties                                                              *
+     *                                                                         *
+     **************************************************************************/
+
+    private final Property startX = new Property() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "startX";
+        }
+
+        @Override
+        protected void invalidate() {
+            build();
+        }
+    };
+
+    public final DoubleProperty startXProperty() {
+        return startX;
+    }
+
+    public final double getStartX() {
+        return startX.get();
+    }
+    public final void setStartX(double value) {
+        startX.set(value);
+    }
+
+    private final Property startY = new Property() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "startY";
+        }
+
+        @Override
+        protected void invalidate() {
+            build();
+        }
+    };
+
+    public DoubleProperty startYProperty() {
+        return startY;
+    }
+    public final double getStartY() {
+        return startY.get();
+    }
+    public final void setStartY(double value) {
+        startY.set(value);
+    }
+
+    private final Property endX = new Property() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "endX";
+        }
+
+        @Override
+        protected void invalidate() {
+            build();
+        }
+    };
+
+    public final DoubleProperty endXProperty() {
+        return endX;
+    }
+    public final double getEndX() {
+        return endX.get();
+    }
+    public final void setEndX(double value) {
+        endX.set(value);
+    }
+
+    private final Property endY = new Property() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "endY";
+        }
+
+        @Override
+        protected void invalidate() {
+            build();
+        }
+    };
+
+    public final DoubleProperty endYProperty() {
+        return endY;
+    }
+    public final double getEndY() {
+        return endY.get();
+    }
+    public final void setEndY(double value) {
+        endY.set(value);
+    }
+
+    private final Property size = new Property() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "size";
+        }
+
+        @Override
+        protected void invalidate() {
+            build();
+        }
+    };
+
+    public final DoubleProperty sizeProperty() {
+        return size;
+    }
+    public final double getSize() {
+        return size.get();
+    }
+    public final void setSize(double value) {
+        size.set(value);
+    }
+
+    private final Property arrowHeadSize = new Property() {
+        @Override
+        public Object getBean() {
+            return this;
+        }
+
+        @Override
+        public String getName() {
+            return "arrowHeadSize";
+        }
+
+        @Override
+        protected void invalidate() {
+            build();
+        }
+    };
+
+    public final DoubleProperty arrowHeadSizeProperty() {
+        return arrowHeadSize;
+    }
+    public final double getArrowHeadSize() {
+        return arrowHeadSize.get();
+    }
+    public final void setArrowHeadSize(double value) {
+        arrowHeadSize.set(value);
+    }
+
+    private abstract static class Property extends DoublePropertyBase {
+        private boolean isSkip = false;
+        private final ArrayList<InvalidationListener> invalidationListeners = new ArrayList<>();
+        private final ArrayList<ChangeListener<? super Number>> changeListeners = new ArrayList<>();
+        @Override
+        protected final void invalidated() {
+            if (!isSkip) {
+                invalidate();
+            }
+        }
+
+        protected void invalidate() {}
+
+        public final void noFireSet(double value) {
+            isSkip = true;
+            for (InvalidationListener invalidationListener : invalidationListeners) {
+                super.removeListener(invalidationListener);
+            }
+            for (ChangeListener<? super Number> changeListener : changeListeners) {
+                super.removeListener(changeListener);
+            }
+            set(value);
+            isSkip = false;
+            for (InvalidationListener invalidationListener : invalidationListeners) {
+                super.addListener(invalidationListener);
+            }
+            for (ChangeListener<? super Number> changeListener : changeListeners) {
+                super.addListener(changeListener);
+            }
+        }
+
+        @Override
+        public void addListener(InvalidationListener listener) {
+            super.addListener(listener);
+            invalidationListeners.add(listener);
+        }
+
+        @Override
+        public void removeListener(InvalidationListener listener) {
+            super.removeListener(listener);
+            invalidationListeners.remove(listener);
+        }
+
+        @Override
+        public void addListener(ChangeListener<? super Number> listener) {
+            super.addListener(listener);
+            changeListeners.add(listener);
+        }
+
+        @Override
+        public void removeListener(ChangeListener<? super Number> listener) {
+            super.removeListener(listener);
+            changeListeners.remove(listener);
+        }
     }
 }
