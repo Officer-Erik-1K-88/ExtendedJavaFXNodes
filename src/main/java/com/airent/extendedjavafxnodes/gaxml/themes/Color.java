@@ -1,5 +1,6 @@
 package com.airent.extendedjavafxnodes.gaxml.themes;
 
+import ch.obermuhlner.math.big.BigDecimalMath;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelFormat;
@@ -17,6 +18,8 @@ import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -301,20 +304,31 @@ public class Color {
         );
     }
 
+    private final static MathContext context = new MathContext(20);
     public static List<Stop> colorStops(javafx.scene.paint.Color toMakeAsStops, int stopCount, boolean brighten) {
         List<Stop> stops = new ArrayList<>();
-        double saturationFactor = 0.9;
-        double brightnessFactor = 0.7;
+        BigDecimal saturationFactor = new BigDecimal("0.9");
+        BigDecimal brightnessFactor = new BigDecimal("0.7");
+        BigDecimal divided = new BigDecimal("4").divide(
+                new BigDecimal(String.valueOf(stopCount))
+                , context);
+        saturationFactor = BigDecimalMath.pow(saturationFactor,
+                divided, context);
+
+        brightnessFactor = BigDecimalMath.pow(brightnessFactor,
+                divided, context);
         if (brighten) {
-            saturationFactor = 1.0 / saturationFactor;
-            brightnessFactor = 1.0 / brightnessFactor;
+            saturationFactor = BigDecimal.ONE.divide(saturationFactor, context);
+            brightnessFactor = BigDecimal.ONE.divide(brightnessFactor, context);
         }
 
         javafx.scene.paint.Color color = toMakeAsStops;
-        double offset = 1.0/stopCount;
+        double offset = 1.0/(stopCount-1);
         for (int i=0; i<stopCount; i++) {
             stops.add(new Stop(offset*i, color));
-            color = color.deriveColor(0, saturationFactor, brightnessFactor, 1);
+            color = color.deriveColor(0,
+                    saturationFactor.doubleValue(),
+                    brightnessFactor.doubleValue(), 1);
         }
 
         return stops;
