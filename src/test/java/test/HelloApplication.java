@@ -33,7 +33,7 @@ public class HelloApplication extends Application {
 
             displayTut.setOnAction(event -> tutorialContent.show());
 
-            vBox.getChildren().addAll(filePicker, displayTut, new Arrow(80, 80));
+            vBox.getChildren().addAll(filePicker, displayTut);
         }
 
         stage.show();

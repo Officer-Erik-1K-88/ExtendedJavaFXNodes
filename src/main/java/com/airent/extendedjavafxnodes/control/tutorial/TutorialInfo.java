@@ -4,6 +4,7 @@ import com.airent.extendedjavafxnodes.gaxml.Attributes;
 import com.airent.extendedjavafxnodes.gaxml.XMLProcessor;
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.utils.Pair;
+import javafx.beans.property.DoublePropertyBase;
 import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;
 import javafx.scene.Node;
@@ -44,6 +45,12 @@ public class TutorialInfo implements SlideInfo {
         this.image = image;
     }
 
+    /**
+     * Gets and returns the url that represents the location
+     * of an XML file that can be parsed as {@code GAXML}.
+     *
+     * @return The url to the {@code GAXML} formatted XML file.
+     */
     public URL getURL() {
         return url;
     }
@@ -62,6 +69,12 @@ public class TutorialInfo implements SlideInfo {
         return linkedNode;
     }
 
+    /**
+     * Parses and returns the {@code GAXML} file that was used
+     * to describe this slide's description.
+     *
+     * @return The list of nodes that make up the description of this slide.
+     */
     @Override
     public List<Node> getDescription() {
         XMLProcessor processor = new XMLProcessor(getURL());

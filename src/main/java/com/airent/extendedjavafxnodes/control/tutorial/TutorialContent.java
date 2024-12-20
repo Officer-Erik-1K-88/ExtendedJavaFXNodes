@@ -43,7 +43,7 @@ public class TutorialContent extends TutorialNode {
     }
 
     public final void addSlide(String title, Image image, URL url, Theme theme, Node linkedNode) {
-        addSlide(title, new TutorialInfo(title, image, url, theme, linkedNode));
+        addSlide(new TutorialInfo(title, image, url, theme, linkedNode));
     }
 
     @Override
