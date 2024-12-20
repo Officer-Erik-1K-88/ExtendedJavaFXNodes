@@ -11,7 +11,7 @@ public class TutorialPopupSkin implements Skin<TutorialPopup> {
      *                                                                         *
      **************************************************************************/
 
-    private TutorialNode<?> tutorialNode;
+    private TutorialNode tutorialNode;
 
     private TutorialPopup tutorialPopup;
 

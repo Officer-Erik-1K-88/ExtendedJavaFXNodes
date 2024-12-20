@@ -4,8 +4,12 @@ import com.airent.extendedjavafxnodes.gaxml.Attributes;
 import com.airent.extendedjavafxnodes.gaxml.XMLProcessor;
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.utils.Pair;
+import javafx.event.EventDispatchChain;
+import javafx.event.EventDispatcher;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.List;

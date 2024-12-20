@@ -28,11 +28,18 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.List;
 
-public class TutorialContent extends TutorialNode<TutorialInfo> {
+public class TutorialContent extends TutorialNode {
+    private static int tcCount = 0;
     private final String title;
+
+    public TutorialContent() {
+        this("Tutorial "+tcCount);
+    }
+
     public TutorialContent(String title) {
         super();
         this.title = title;
+        tcCount++;
     }
 
     public final void addSlide(String title, Image image, URL url, Theme theme, Node linkedNode) {

@@ -5,15 +5,15 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.skin.TooltipSkin;
 
 public class TutorialPopup extends PopupControl {
-    private final TutorialNode<?> tutorialNode;
+    private final TutorialNode tutorialNode;
 
-    public TutorialPopup(TutorialNode<?> tutorialNode) {
+    public TutorialPopup(TutorialNode tutorialNode) {
         this.tutorialNode = tutorialNode;
         this.setAutoHide(false);
         this.setAutoFix(true);
     }
 
-    public TutorialNode<?> getTutorial() {
+    public TutorialNode getTutorial() {
         return tutorialNode;
     }
 

@@ -1,25 +1,48 @@
 package com.airent.extendedjavafxnodes.shape;
 
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
+import javafx.css.CssMetaData;
+import javafx.css.Styleable;
+import javafx.scene.AccessibleRole;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.ClosePath;
+import javafx.scene.shape.FillRule;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.StrokeType;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Arrow extends Path {
+public class Arrow extends Parent {
     private static final double defaultArrowHeadSize = 5.0;
     private static final double defaultSize = 4.0;
+    private static final double defaultWidth = 10.0;
+
+    private final Path arrowPath;
 
     public Arrow(double startX, double startY, double endX, double endY, double size, double arrowHeadSize) {
         super();
+        setAccessibleRole(AccessibleRole.NODE);
+        arrowPath = new Path();
+        getChildren().add(arrowPath);
         setStroke(Color.BLACK);
         setFill(Color.BLACK);
+
 
         update(startX, startY, endX, endY, size, arrowHeadSize);
     }
@@ -36,7 +59,35 @@ public class Arrow extends Path {
         this(0, 0, width, 0, size);
     }
 
-    public void update(double startX, double startY, double endX, double endY, double size, double arrowHeadSize) {
+    public Arrow(double width) {
+        this(0, 0, width, 0, width/2);
+    }
+
+    public Arrow() {
+        this(defaultWidth);
+    }
+
+    public final void update(double startX, double startY, double endX, double endY, double size) {
+        update(startX, startY, endX, endY, size, getArrowHeadSize());
+    }
+
+    public final void update(double startX, double startY, double endX, double endY) {
+        update(startX, startY, endX, endY, getSize());
+    }
+
+    public final void update(double width, double size) {
+        update(0, 0, width, 0, size);
+    }
+
+    public final void update(double width) {
+        update(0, 0, width, 0, width/2);
+    }
+
+    public final void update() {
+        update(getEndX());
+    }
+
+    public final void update(double startX, double startY, double endX, double endY, double size, double arrowHeadSize) {
         this.startX.noFireSet(startX);
         this.startY.noFireSet(startY);
         this.endX.noFireSet(endX);
@@ -55,7 +106,7 @@ public class Arrow extends Path {
         double size = getSize();
         double arrowHeadSize = getArrowHeadSize();
 
-        getElements().clear();
+        arrowPath.getElements().clear();
 
         if (size == 0) {
             // Width
@@ -68,8 +119,8 @@ public class Arrow extends Path {
             }
 
             //Line
-            getElements().add(new MoveTo(startX, startY));
-            getElements().add(new LineTo(endX, endY));
+            arrowPath.getElements().add(new MoveTo(startX, startY));
+            arrowPath.getElements().add(new LineTo(endX, endY));
 
             //ArrowHead
             double angle = Math.atan2((endY - startY), (endX - startX)) - Math.PI / 2.0;
@@ -82,9 +133,9 @@ public class Arrow extends Path {
             double x2 = (1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + endX;
             double y2 = (1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * arrowHeadSize + endY;
 
-            getElements().add(new LineTo(x1, y1));
-            getElements().add(new LineTo(x2, y2));
-            getElements().add(new LineTo(endX, endY));
+            arrowPath.getElements().add(new LineTo(x1, y1));
+            arrowPath.getElements().add(new LineTo(x2, y2));
+            arrowPath.getElements().add(new LineTo(endX, endY));
         } else {
             // Keep all steady and prevent gaps
             if (endY == 0 && endX != 0) {
@@ -123,11 +174,11 @@ public class Arrow extends Path {
             double rectEndRightY = endY - Math.sin(angle) * arrowHeadSize - offsetY;
 
             // Create the rectangle (thick line)
-            getElements().add(new MoveTo(rectStartLeftX, rectStartLeftY));
-            getElements().add(new LineTo(rectEndLeftX, rectEndLeftY));
-            getElements().add(new LineTo(rectEndRightX, rectEndRightY));
-            getElements().add(new LineTo(rectStartRightX, rectStartRightY));
-            getElements().add(new LineTo(rectStartLeftX, rectStartLeftY)); // Close the rectangle
+            arrowPath.getElements().add(new MoveTo(rectStartLeftX, rectStartLeftY));
+            arrowPath.getElements().add(new LineTo(rectEndLeftX, rectEndLeftY));
+            arrowPath.getElements().add(new LineTo(rectEndRightX, rectEndRightY));
+            arrowPath.getElements().add(new LineTo(rectStartRightX, rectStartRightY));
+            arrowPath.getElements().add(new LineTo(rectStartLeftX, rectStartLeftY)); // Close the rectangle
 
             // Points for the triangle (arrowhead)
             double arrowTipX = endX;
@@ -140,14 +191,14 @@ public class Arrow extends Path {
             double arrowRightY = endY - Math.sin(angle + Math.PI / 6) * arrowHeadSize;
 
             // Create the triangle (arrowhead)
-            getElements().add(new MoveTo(rectEndLeftX, rectEndLeftY)); // Connect to rectangle
-            getElements().add(new LineTo(arrowLeftX, arrowLeftY)); // Left side of the arrowhead
-            getElements().add(new LineTo(arrowTipX, arrowTipY)); // Tip of the arrowhead
-            getElements().add(new LineTo(arrowRightX, arrowRightY)); // Right side of the arrowhead
-            getElements().add(new LineTo(rectEndRightX, rectEndRightY)); // Connect back to rectangle
-            getElements().add(new LineTo(rectEndLeftX, rectEndLeftY)); // Close the arrowhead
+            arrowPath.getElements().add(new MoveTo(rectEndLeftX, rectEndLeftY)); // Connect to rectangle
+            arrowPath.getElements().add(new LineTo(arrowLeftX, arrowLeftY)); // Left side of the arrowhead
+            arrowPath.getElements().add(new LineTo(arrowTipX, arrowTipY)); // Tip of the arrowhead
+            arrowPath.getElements().add(new LineTo(arrowRightX, arrowRightY)); // Right side of the arrowhead
+            arrowPath.getElements().add(new LineTo(rectEndRightX, rectEndRightY)); // Connect back to rectangle
+            arrowPath.getElements().add(new LineTo(rectEndLeftX, rectEndLeftY)); // Close the arrowhead
         }
-        getElements().add(new ClosePath());
+        arrowPath.getElements().add(new ClosePath());
 
         this.startX.noFireSet(startX);
         this.startY.noFireSet(startY);
@@ -167,6 +218,117 @@ public class Arrow extends Path {
      *                                                                         *
      **************************************************************************/
 
+    // fill
+    public final void setFillRule(FillRule value) {
+        arrowPath.setFillRule(value);
+    }
+    public final FillRule getFillRule() {
+        return arrowPath.getFillRule();
+    }
+    public final ObjectProperty<FillRule> fillRuleProperty() {
+        return arrowPath.fillRuleProperty();
+    }
+
+    public final void setFill(Paint value) {
+        arrowPath.setFill(value);
+    }
+    public final Paint getFill() {
+        return arrowPath.getFill();
+    }
+    public final ObjectProperty<Paint> fillProperty() {
+        return arrowPath.fillProperty();
+    }
+
+    // stroke
+    public final void setStroke(Paint value) {
+        arrowPath.setStroke(value);
+    }
+    public final Paint getStroke() {
+        return arrowPath.getStroke();
+    }
+    public final ObjectProperty<Paint> strokeProperty() {
+        return arrowPath.strokeProperty();
+    }
+    public final void setStrokeType(StrokeType value) {
+        arrowPath.setStrokeType(value);
+    }
+    public final StrokeType getStrokeType() {
+        return arrowPath.getStrokeType();
+    }
+    public final ObjectProperty<StrokeType> strokeTypeProperty() {
+        return arrowPath.strokeTypeProperty();
+    }
+    public final void setStrokeWidth(double value) {
+        arrowPath.setStrokeWidth(value);
+    }
+    public final double getStrokeWidth() {
+        return arrowPath.getStrokeWidth();
+    }
+    public final DoubleProperty strokeWidthProperty() {
+        return arrowPath.strokeWidthProperty();
+    }
+    public final void setStrokeLineJoin(StrokeLineJoin value) {
+        arrowPath.setStrokeLineJoin(value);
+    }
+    public final StrokeLineJoin getStrokeLineJoin() {
+        return arrowPath.getStrokeLineJoin();
+    }
+    public final ObjectProperty<StrokeLineJoin> strokeLineJoinProperty() {
+        return arrowPath.strokeLineJoinProperty();
+    }
+    public final void setStrokeLineCap(StrokeLineCap value) {
+        arrowPath.setStrokeLineCap(value);
+    }
+    public final StrokeLineCap getStrokeLineCap() {
+        return arrowPath.getStrokeLineCap();
+    }
+    public final ObjectProperty<StrokeLineCap> strokeLineCapProperty() {
+        return arrowPath.strokeLineCapProperty();
+    }
+    public final void setStrokeMiterLimit(double value) {
+        arrowPath.setStrokeMiterLimit(value);
+    }
+    public final double getStrokeMiterLimit() {
+        return arrowPath.getStrokeMiterLimit();
+    }
+    public final DoubleProperty strokeMiterLimitProperty() {
+        return arrowPath.strokeMiterLimitProperty();
+    }
+    public final void setStrokeDashOffset(double value) {
+        arrowPath.setStrokeDashOffset(value);
+    }
+    public final double getStrokeDashOffset() {
+        return arrowPath.getStrokeDashOffset();
+    }
+    public final DoubleProperty strokeDashOffsetProperty() {
+        return arrowPath.strokeDashOffsetProperty();
+    }
+    public final ObservableList<Double> getStrokeDashArray() {
+        return arrowPath.getStrokeDashArray();
+    }
+
+    // other
+    public final void setSmooth(boolean value) {
+        arrowPath.setSmooth(value);
+    }
+    public final boolean isSmooth() {
+        return arrowPath.isSmooth();
+    }
+    public final BooleanProperty smoothProperty() {
+        return arrowPath.smoothProperty();
+    }
+
+    @Override
+    public List<CssMetaData<? extends Styleable, ?>> getCssMetaData() {
+        return arrowPath.getCssMetaData();
+    }
+
+    @Override
+    public Node getStyleableNode() {
+        return arrowPath;
+    }
+
+    // positioning and sizing
     private final Property startX = new Property() {
         @Override
         public Object getBean() {

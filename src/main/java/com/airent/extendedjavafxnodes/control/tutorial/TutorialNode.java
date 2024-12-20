@@ -1,10 +1,10 @@
 package com.airent.extendedjavafxnodes.control.tutorial;
 
-import com.airent.extendedjavafxnodes.gaxml.themes.Light;
 import com.airent.extendedjavafxnodes.gaxml.themes.Theme;
 import com.airent.extendedjavafxnodes.shape.Arrow;
 import com.airent.extendedjavafxnodes.utils.ListMap;
-import com.airent.extendedjavafxnodes.utils.Pair;
+import javafx.beans.DefaultProperty;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -16,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -38,7 +37,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TutorialNode<T extends SlideInfo> extends VBox implements SlideInfo {
+@DefaultProperty("slides")
+public abstract class TutorialNode extends VBox implements SlideInfo {
     private final TutorialPopup popup;
     private final Label flowCounter;
     private final Button next;
@@ -54,13 +54,44 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
     private final Label noContent;
     private final Label title;
 
-    private final ListMap<String, T> slides = new ListMap<>();
+    private final ListMap<String, SlideInfo> slides = new ListMap<>();
+
+    public ListMap<String, SlideInfo> getSlides() {
+        return slides;
+    }
+
     private int current = 0;
     private boolean isSlide = false;
     private final Image image;
 
     public TutorialNode() {
-        this(null);
+        this((Image) null);
+    }
+
+    public TutorialNode(SlideInfo... slides) {
+        this(null, slides);
+    }
+
+    public TutorialNode(List<SlideInfo> slides) {
+        this(null, slides);
+    }
+
+    public TutorialNode(Image image, SlideInfo... slides) {
+        this(image);
+        if (slides != null) {
+            for (SlideInfo slide : slides) {
+                addSlide(slide.getTitle(), slide);
+            }
+        }
+    }
+
+    public TutorialNode(Image image, List<SlideInfo> slides) {
+        this(image);
+        if (slides != null) {
+            for (SlideInfo slide : slides) {
+                addSlide(slide.getTitle(), slide);
+            }
+        }
     }
 
     public TutorialNode(Image image) {
@@ -135,7 +166,7 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
     private void updateTheme(Node node) {
         Theme theme = getTheme();
         boolean allowBorder = true;
-        if (node instanceof TutorialNode<?> tutorialNode) {
+        if (node instanceof TutorialNode tutorialNode) {
             allowBorder = !tutorialNode.isSlide;
         }
         if (node instanceof Region region) {
@@ -169,7 +200,7 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
 
     @Override
     public Theme getTheme() {
-        T slide = getCurrentSlide();
+        SlideInfo slide = getCurrentSlide();
         if (slide == null) return defaultTheme();
         return slide.getTheme();
     }
@@ -183,33 +214,33 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
 
     @Override
     public Node getLinkedNode() {
-        T slide = getCurrentSlide();
+        SlideInfo slide = getCurrentSlide();
         if (slide == null) return null;
         return slide.getLinkedNode();
     }
 
-    public final void addSlide(String name, @NotNull T slide) {
+    public final void addSlide(String name, @NotNull SlideInfo slide) {
         if (slide.getLinkedNode() == null) {
             throw new RuntimeException("Cannot have a slide with no linked node,");
         }
         slides.put(name, slide);
-        if (slide instanceof TutorialNode<?> tutorialNode) {
+        if (slide instanceof TutorialNode tutorialNode) {
             tutorialNode.isSlide = true;
             tutorialNode.setBorder(Border.EMPTY);
         }
         updateContent();
     }
 
-    public final T getSlide(String name) {
+    public final SlideInfo getSlide(String name) {
         return slides.get(name);
     }
 
-    public final T getSlide(int index) {
+    public final SlideInfo getSlide(int index) {
         if (slides.isEmpty()) return null;
         return slides.getValue(index);
     }
 
-    public final T getCurrentSlide() {
+    public final SlideInfo getCurrentSlide() {
         return getSlide(current);
     }
 
@@ -238,8 +269,8 @@ public abstract class TutorialNode<T extends SlideInfo> extends VBox implements 
         content.getChildren().clear();
         Theme theme = getTheme();
         if (!slides.isEmpty()) {
-            T currentSlide = getCurrentSlide();
-            if (currentSlide instanceof TutorialNode<?> tutorialNode) {
+            SlideInfo currentSlide = getCurrentSlide();
+            if (currentSlide instanceof TutorialNode tutorialNode) {
                 updateTheme(tutorialNode);
             }
             imageView.setImage(currentSlide.getImage());
