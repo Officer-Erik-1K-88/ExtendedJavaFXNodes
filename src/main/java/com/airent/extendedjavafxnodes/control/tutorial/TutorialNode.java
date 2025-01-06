@@ -302,7 +302,7 @@ public abstract class TutorialNode extends Parent implements SlideInfo {
      * Gets and returns the {@link Theme} of the
      * currently selected slide.
      * If no slide is selected then the {@link #defaultTheme() default Theme}
-     * is used instead.
+     * is used instead. The default Theme is also used if the slide has no Theme.
      *
      * @return The {@code Theme} that is currently selected.
      */
@@ -310,7 +310,9 @@ public abstract class TutorialNode extends Parent implements SlideInfo {
     public final Theme getTheme() {
         SlideInfo slide = getCurrentSlide();
         if (slide == null) return defaultTheme();
-        return slide.getTheme();
+        Theme theme = slide.getTheme();
+        if (theme == null) return defaultTheme();
+        return theme;
     }
 
     /**
