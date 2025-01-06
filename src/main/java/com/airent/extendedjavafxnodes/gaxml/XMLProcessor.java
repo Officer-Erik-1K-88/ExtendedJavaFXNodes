@@ -369,6 +369,7 @@ public class XMLProcessor {
         }
 
         xml.forEachNode(node -> {
+            if (theme == null) theme = new Light();
             Formatter text = new Formatter(baseFormat, theme);
             Attributes attrs = attributes(node);
             if (node.getNodeType() == 1) {
