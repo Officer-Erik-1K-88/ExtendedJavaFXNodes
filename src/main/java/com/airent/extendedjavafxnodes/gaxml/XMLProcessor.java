@@ -54,6 +54,7 @@ public class XMLProcessor {
     private final XML file;
     private final Script script;
     private Theme theme;
+    private double defaultWidth = 668;
 
     private void addToSegments() {
         Segment segment = new Segment(this.filePath.toString(), this);
@@ -232,6 +233,14 @@ public class XMLProcessor {
         this.theme = theme;
     }
 
+    public double getDefaultWidth() {
+        return defaultWidth;
+    }
+
+    public void setDefaultWidth(double defaultWidth) {
+        this.defaultWidth = defaultWidth;
+    }
+
     public void save() {
         try {
             file.update();
@@ -371,6 +380,7 @@ public class XMLProcessor {
         xml.forEachNode(node -> {
             if (theme == null) theme = new Light();
             Formatter text = new Formatter(baseFormat, theme);
+            text.setDefaultWidth(defaultWidth);
             Attributes attrs = attributes(node);
             if (node.getNodeType() == 1) {
                 Element elm = (Element) node;

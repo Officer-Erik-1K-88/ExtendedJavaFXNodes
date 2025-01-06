@@ -41,6 +41,7 @@ public class Formatter {
     private final List<Node> textList = new ArrayList<>();
     private final Attributes baseFormat = new Attributes((org.w3c.dom.Node) null);
     private final Theme theme;
+    private double defaultWidth = 668;
 
     public Formatter(Theme theme) {
         this(null, theme);
@@ -80,6 +81,14 @@ public class Formatter {
         return theme;
     }
 
+    public double getDefaultWidth() {
+        return defaultWidth;
+    }
+
+    public void setDefaultWidth(double defaultWidth) {
+        this.defaultWidth = defaultWidth;
+    }
+
     public void add(List<Node> nodes) {
         textList.addAll(nodes);
     }
@@ -114,7 +123,7 @@ public class Formatter {
             height = ph;
         }
         double y = (ph/2)-(height/2);//ph/(3.5/1.5);//(height+ph)/2.5;
-        Rectangle rect = new Rectangle(668, height);
+        Rectangle rect = new Rectangle(defaultWidth, height);
         rect.setTranslateY(y);
         
         applyFormat(rect, format);
@@ -140,7 +149,7 @@ public class Formatter {
         } else {
             tNode.setFont(new Font(fontType, fontSize));
         }
-        tNode.setWrappingWidth(668);
+        tNode.setWrappingWidth(defaultWidth);
         applyFormat(tNode, format);
         if (!format.containsKey("href")) {
             newNode = tNode;
@@ -369,8 +378,8 @@ public class Formatter {
             pane.setMaxWidth(width);
             pane.setPrefWidth(width);
         } else {
-            pane.setMaxWidth(668);
-            pane.setPrefWidth(668);
+            pane.setMaxWidth(defaultWidth);
+            pane.setPrefWidth(defaultWidth);
         }
         if (format.containsKey("height")) {
             double height = Double.parseDouble(format.get("height"));
