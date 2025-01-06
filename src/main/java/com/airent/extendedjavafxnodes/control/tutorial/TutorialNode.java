@@ -547,7 +547,7 @@ public abstract class TutorialNode extends Parent implements SlideInfo {
         if (height < minHeight) {
             this.actual.setCenter(null);
             ScrollPane scrollPane = new ScrollPane(heldContent);
-            scrollPane.setFitToWidth(false);
+            scrollPane.setFitToWidth(true);
             this.actual.setCenter(scrollPane);
         } else {
             if (heldContent.getParent() instanceof ScrollPane scrollPane) {

@@ -78,7 +78,7 @@ public class TutorialInfo implements SlideInfo {
     @Override
     public List<Node> getDescription() {
         XMLProcessor processor = new XMLProcessor(getURL());
-        processor.setDefaultWidth(380);
+        processor.setDefaultWidth(240);
         processor.setTheme(getTheme());
         return processor.load(new Attributes(new Pair<>("align", "top_center")));
     }
