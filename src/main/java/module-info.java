@@ -7,6 +7,7 @@ module com.airent.extendedjavafxnodes {
     requires org.json;
     requires org.jsoup;
     requires org.mozilla.rhino;
+    requires org.reflections;
 
     requires java.desktop;
 
@@ -26,4 +27,6 @@ module com.airent.extendedjavafxnodes {
     exports com.airent.extendedjavafxnodes.control.tutorial;
     opens com.airent.extendedjavafxnodes.control.tutorial to javafx.fxml;
     exports com.airent.extendedjavafxnodes.shape;
+    exports com.airent.extendedjavafxnodes.gaxml.nodes;
+    exports com.airent.extendedjavafxnodes.gaxml.nodes.tags;
 }

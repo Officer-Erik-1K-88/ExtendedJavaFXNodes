@@ -19,7 +19,7 @@ import org.w3c.dom.Text;
 import org.w3c.dom.TypeInfo;
 import org.w3c.dom.UserDataHandler;
 
-public interface Element extends org.w3c.dom.Element, Document {
+public interface Element extends org.w3c.dom.Element {
     org.w3c.dom.Node getNode();
 
     default Node getRoot() {
@@ -82,22 +82,6 @@ public interface Element extends org.w3c.dom.Element, Document {
     @Override
     default String getNamespaceURI() {
         return getNode().getNamespaceURI();
-    }
-
-    @Override
-    default DocumentType getDoctype() {
-        if (getNode() instanceof Document document) {
-            return document.getDoctype();
-        }
-        return getOwnerDocument().getDoctype();
-    }
-
-    @Override
-    default DOMImplementation getImplementation() {
-        if (getNode() instanceof Document document) {
-            return document.getImplementation();
-        }
-        return getOwnerDocument().getImplementation();
     }
 
     /* *************************************************************************
@@ -375,7 +359,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return nodes;
     }
 
-    @Override
     default org.w3c.dom.Element getElementById(String elementId) {
         if (getNode() instanceof Document document) {
             return document.getElementById(elementId);
@@ -432,30 +415,6 @@ public interface Element extends org.w3c.dom.Element, Document {
     }
 
     @Override
-    default Node importNode(Node importedNode, boolean deep) throws DOMException {
-        if (getNode() instanceof Document document) {
-            return document.importNode(importedNode, deep);
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
-
-    @Override
-    default Node adoptNode(Node source) throws DOMException {
-        if (getNode() instanceof Document document) {
-            return document.adoptNode(source);
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
-
-    @Override
-    default Node renameNode(Node n, String namespaceURI, String qualifiedName) throws DOMException {
-        if (getNode() instanceof Document document) {
-            return document.renameNode(n, namespaceURI, qualifiedName);
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
-
-    @Override
     default boolean hasChildNodes() {
         return getRoot().hasChildNodes();
     }
@@ -466,7 +425,6 @@ public interface Element extends org.w3c.dom.Element, Document {
      *                                                                         *
      **************************************************************************/
 
-    @Override
     default org.w3c.dom.Element createElement(String tagName) throws DOMException {
         if (getNode() instanceof Document document) {
             return document.createElement(tagName);
@@ -474,7 +432,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createElement(tagName);
     }
 
-    @Override
     default org.w3c.dom.Element createElementNS(String namespaceURI, String qualifiedName) throws DOMException {
         if (getNode() instanceof Document document) {
             return document.createElementNS(namespaceURI, qualifiedName);
@@ -482,15 +439,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createElementNS(namespaceURI, qualifiedName);
     }
 
-    @Override
-    default DocumentFragment createDocumentFragment() {
-        if (getNode() instanceof Document document) {
-            return document.createDocumentFragment();
-        }
-        return getOwnerDocument().createDocumentFragment();
-    }
-
-    @Override
     default Text createTextNode(String data) {
         if (getNode() instanceof Document document) {
             return document.createTextNode(data);
@@ -498,7 +446,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createTextNode(data);
     }
 
-    @Override
     default Comment createComment(String data) {
         if (getNode() instanceof Document document) {
             return document.createComment(data);
@@ -506,7 +453,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createComment(data);
     }
 
-    @Override
     default CDATASection createCDATASection(String data) throws DOMException {
         if (getNode() instanceof Document document) {
             return document.createCDATASection(data);
@@ -514,15 +460,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createCDATASection(data);
     }
 
-    @Override
-    default ProcessingInstruction createProcessingInstruction(String target, String data) throws DOMException {
-        if (getNode() instanceof Document document) {
-            return document.createProcessingInstruction(target, data);
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
-
-    @Override
     default Attr createAttribute(String name) throws DOMException {
         if (getNode() instanceof Document document) {
             return document.createAttribute(name);
@@ -530,7 +467,6 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createAttribute(name);
     }
 
-    @Override
     default Attr createAttributeNS(String namespaceURI, String qualifiedName) throws DOMException {
         if (getNode() instanceof Document document) {
             return document.createAttributeNS(namespaceURI, qualifiedName);
@@ -538,27 +474,11 @@ public interface Element extends org.w3c.dom.Element, Document {
         return getOwnerDocument().createAttributeNS(namespaceURI, qualifiedName);
     }
 
-    @Override
-    default EntityReference createEntityReference(String name) throws DOMException {
-        if (getNode() instanceof Document document) {
-            return document.createEntityReference(name);
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
-
     /* *************************************************************************
      *                                                                         *
      * Data                                                                    *
      *                                                                         *
      **************************************************************************/
-
-    @Override
-    default org.w3c.dom.Element getDocumentElement() {
-        if (getNode() instanceof Document document) {
-            return document.getDocumentElement();
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
 
     @Override
     default Document getOwnerDocument() {
@@ -583,23 +503,6 @@ public interface Element extends org.w3c.dom.Element, Document {
     @Override
     default Node cloneNode(boolean deep) {
         return getNode().cloneNode(deep);
-    }
-
-    @Override
-    default DOMConfiguration getDomConfig() {
-        if (getNode() instanceof Document document) {
-            return document.getDomConfig();
-        }
-        throw new DOMException((short)9, "Operation not Allowed.");
-    }
-
-    @Override
-    default void normalizeDocument() {
-        if (getNode() instanceof Document document) {
-            document.normalizeDocument();
-        } else {
-            throw new DOMException((short)9, "Operation not Allowed.");
-        }
     }
 
     @Override
@@ -675,89 +578,5 @@ public interface Element extends org.w3c.dom.Element, Document {
     @Override
     default Object getUserData(String key) {
         return getNode().getUserData(key);
-    }
-
-    @Override
-    default String getInputEncoding() {
-        if (getNode() instanceof Document document) {
-            return document.getInputEncoding();
-        }
-        return null;
-    }
-
-    @Override
-    default String getXmlEncoding() {
-        if (getNode() instanceof Document document) {
-            return document.getXmlEncoding();
-        }
-        return null;
-    }
-
-    @Override
-    default boolean getXmlStandalone() {
-        if (getNode() instanceof Document document) {
-            return document.getXmlStandalone();
-        }
-        return false;
-    }
-
-    @Override
-    default void setXmlStandalone(boolean xmlStandalone) throws DOMException {
-        if (getNode() instanceof Document document) {
-            document.setXmlStandalone(xmlStandalone);
-        } else {
-            throw new DOMException((short)9, "Operation not Allowed.");
-        }
-    }
-
-    @Override
-    default String getXmlVersion() {
-        if (getNode() instanceof Document document) {
-            return document.getXmlVersion();
-        }
-        return getOwnerDocument().getXmlVersion();
-    }
-
-    @Override
-    default void setXmlVersion(String xmlVersion) throws DOMException {
-        if (getNode() instanceof Document document) {
-            document.setXmlVersion(xmlVersion);
-        } else {
-            throw new DOMException((short)9, "Operation not Allowed.");
-        }
-    }
-
-    @Override
-    default boolean getStrictErrorChecking() {
-        if (getNode() instanceof Document document) {
-            return document.getStrictErrorChecking();
-        }
-        return true;
-    }
-
-    @Override
-    default void setStrictErrorChecking(boolean strictErrorChecking) {
-        if (getNode() instanceof Document document) {
-            document.setStrictErrorChecking(strictErrorChecking);
-        } else {
-            throw new DOMException((short)9, "Operation not Allowed.");
-        }
-    }
-
-    @Override
-    default String getDocumentURI() {
-        if (getNode() instanceof Document document) {
-            return document.getDocumentURI();
-        }
-        return null;
-    }
-
-    @Override
-    default void setDocumentURI(String documentURI) {
-        if (getNode() instanceof Document document) {
-            document.setDocumentURI(documentURI);
-        } else {
-            throw new DOMException((short)9, "Operation not Allowed.");
-        }
     }
 }

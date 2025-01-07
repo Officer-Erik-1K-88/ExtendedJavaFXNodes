@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.airent.extendedjavafxnodes.gaxml.nodes.Document;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.NamedNodeMap;
@@ -26,7 +27,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
+//import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
@@ -37,7 +38,6 @@ import org.xml.sax.SAXException;
 public class XML {
     // Create a new Document
     private Document document;
-    private Node root;
     private DOMSource source;
     private File file;
 
@@ -53,37 +53,28 @@ public class XML {
     }
 
     public XML(Node node) {
-        this.root = node;
         if (node instanceof Document doc) {
             this.document = doc;
         } else {
-            this.document = this.root.getOwnerDocument();
+            this.document = new Document(node);
         }
         this.source = new DOMSource(this.document);
     }
 
     public boolean isRootDocument() {
-        return this.root.isEqualNode(this.document) || this.root == this.document;
+        return this.document.isRootDocument();
     }
 
     public Node getRoot() {
-        return root;
+        return this.document.getRoot();
     }
 
-    private void setDocument(Document document) {
-        this.document = document;
-        this.root = this.document;
+    private void setDocument(org.w3c.dom.Document document) {
+        this.document = new Document(document);
     }
 
     public void setRoot(Node root) {
-        if (root == null) {
-            setRoot(this.document.getDocumentElement());
-        } else {
-            if (root.getOwnerDocument() != this.document) {
-                throw new RuntimeException("Root Node must be of the same document as current root Node.");
-            }
-            this.root = root;
-        }
+        this.document.setRoot(root);
     }
 
     public File getFile() {
@@ -106,7 +97,7 @@ public class XML {
         }
         if (useFileContent) {
             if (!isNew) {
-                Document document1;
+                org.w3c.dom.Document document1;
                 try {
                     document1 = Build.BUILD.parse(this.file);
                 } catch (SAXException e) {
@@ -153,53 +144,44 @@ public class XML {
     }
 
     public Element create(String tagName) {
-        return this.document.createElement(tagName);
+        return document.create(tagName);
     }
 
     public Element create(String tagName, Node newChild) {
-        Element elm = create(tagName);
-        elm.appendChild(newChild);
-        return elm;
+        return document.create(tagName, newChild);
     }
 
     public Node append(@NotNull Node parent, Node child) {
-        return parent.appendChild(child);
+        return document.append(parent, child);
     }
     public Node append(Node child) {
-        return append(this.root, child);
+        return document.append(child);
     }
 
     public Node add(Node root, String tagName, String data) {
-        Element elm = create(tagName, this.document.createTextNode(data));
-        return append(root, elm);
+        return document.add(root, tagName, data);
     }
     public Node add(String tagName, String data) {
-        return add(this.root, tagName, data);
+        return document.add(tagName, data);
     }
 
     public Node remove(@NotNull Node root, Node oldChild) {
-        return root.removeChild(oldChild);
+        return document.remove(root, oldChild);
     }
     public Node remove(Node oldChild) {
-        return remove(this.root, oldChild);
+        return document.remove(oldChild);
     }
 
     public NamedNodeMap getAttributes() {
-        return this.root.getAttributes();
+        return document.getAttributes();
     }
 
     public Element getElementById(String elementId) {
-        return this.document.getElementById(elementId);
+        return document.getElementById(elementId);
     }
 
     public NodeList getElementsByTagName(String tagName) {
-        if (isRootDocument()) {
-            return this.document.getElementsByTagName(tagName);
-        }
-        if (root instanceof Element elm) {
-            return elm.getElementsByTagName(tagName);
-        }
-        return null;
+        return this.document.getElementsByTagName(tagName);
     }
 
     public boolean hasChildNodes() {
@@ -210,7 +192,7 @@ public class XML {
     }
 
     public NodeList getChildNodes() {
-        return this.root.getChildNodes();
+        return document.getChildNodes();
     }
 
     public void forEachNode(@NotNull Node root, Consumer<Node> action) {
@@ -221,7 +203,7 @@ public class XML {
     }
 
     public void forEachNode(Consumer<Node> action) {
-        forEachNode(this.root, action);
+        forEachNode(getRoot(), action);
     }
 
     public static class Build extends DocumentBuilder {
@@ -254,7 +236,7 @@ public class XML {
          * @return A new instance of a DOM Document object.
          */
         @Override
-        public Document newDocument() {
+        public org.w3c.dom.Document newDocument() {
             return builder.newDocument();
         }
 
@@ -283,7 +265,7 @@ public class XML {
          * @throws IllegalArgumentException When <code>is</code> is <code>null</code>
          */
         @Override
-        public Document parse(InputSource is) throws IOException, SAXException {
+        public org.w3c.dom.Document parse(InputSource is) throws IOException, SAXException {
             return builder.parse(is);
         }
 
