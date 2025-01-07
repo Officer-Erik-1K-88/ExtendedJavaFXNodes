@@ -541,7 +541,7 @@ public abstract class TutorialNode extends Parent implements SlideInfo {
             popup.setMaxHeight(height);
         }
 
-        System.out.println(height);
+        //System.out.println(height);
         if (height < minHeight) {
             this.actual.setCenter(null);
             ScrollPane scrollPane = new ScrollPane(heldContent);
