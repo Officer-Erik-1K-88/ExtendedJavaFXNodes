@@ -19,6 +19,7 @@ public class Document implements Element {
         return this.root.isEqualNode(this.document) || this.root == this.document;
     }
 
+    @Override
     public Node getRoot() {
         return root;
     }
@@ -69,19 +70,5 @@ public class Document implements Element {
     }
     public Node remove(Node oldChild) {
         return remove(this.root, oldChild);
-    }
-
-    @Override
-    public NamedNodeMap getAttributes() {
-        if (this.root.getAttributes() == null) {
-            return Element.super.getAttributes();
-        }
-        return this.root.getAttributes();
-    }
-
-    @NotNull
-    @Override
-    public NodeList getChildNodes() {
-        return this.root.getChildNodes();
     }
 }
