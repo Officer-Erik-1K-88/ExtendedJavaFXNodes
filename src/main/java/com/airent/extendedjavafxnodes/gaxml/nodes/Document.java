@@ -1,5 +1,6 @@
 package com.airent.extendedjavafxnodes.gaxml.nodes;
 
+import com.airent.extendedjavafxnodes.gaxml.Attributes;
 import com.airent.extendedjavafxnodes.gaxml.XML;
 import com.airent.extendedjavafxnodes.gaxml.nodes.tags.Page;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,7 @@ public class Document implements Element, org.w3c.dom.Document {
     private org.w3c.dom.Document document;
     private Node root;
     private Page page;
+    private Attributes baseFormat;
 
     public Document(org.w3c.dom.Document document) {
         setDocument(document);
@@ -40,6 +42,11 @@ public class Document implements Element, org.w3c.dom.Document {
     @Override
     public boolean isDisplayable() {
         return true;
+    }
+
+    @Override
+    public @NotNull Attributes getBaseFormat() {
+        return baseFormat;
     }
 
     @Override
@@ -104,6 +111,7 @@ public class Document implements Element, org.w3c.dom.Document {
 
     private void parse(boolean isRoot) {
         Node n = (isRoot?this.root:document.getDocumentElement());
+        this.baseFormat = new Attributes(this.root);
         org.w3c.dom.Element pageElm = null;
         if (n instanceof org.w3c.dom.Element elm) {
             pageElm = elm;
