@@ -38,6 +38,11 @@ public class Document implements Element, org.w3c.dom.Document {
      **************************************************************************/
 
     @Override
+    public boolean isDisplayable() {
+        return true;
+    }
+
+    @Override
     public final org.w3c.dom.Document getNode() {
         return document;
     }

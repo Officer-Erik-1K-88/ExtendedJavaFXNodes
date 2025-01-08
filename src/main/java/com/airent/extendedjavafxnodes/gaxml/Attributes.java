@@ -11,22 +11,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Attributes {
-    private Node node;
+    private Node node = null;
     private HashMap<String, String> attributes = new HashMap<>();
     private boolean onlyPassable;
 
     @SafeVarargs
-    public Attributes(Map.Entry<String, String> @NotNull ... attrs) {
+    public Attributes(Map.Entry<String, String> ... attrs) {
         this.node = null;
         this.onlyPassable = false;
-        for (Map.Entry<String, String> attr : attrs) {
-            put(attr.getKey(), attr.getValue());
+        if (attrs != null) {
+            for (Map.Entry<String, String> attr : attrs) {
+                put(attr.getKey(), attr.getValue());
+            }
         }
     }
 
-    public Attributes(Node node, @NotNull Attributes attr) {
+    public Attributes(Node node, Attributes attr) {
         this(node, false);
-        this.attributes.putAll(attr.getAttributes());
+        if (attr != null) {
+            this.attributes.putAll(attr.getAttributes());
+        }
     }
 
     public Attributes(Node node) {
@@ -45,7 +49,9 @@ public class Attributes {
 
     public Attributes(Map<String, String> attrs, boolean onlyPassable) {
         this.node = null;
-        this.attributes.putAll(attrs);
+        if (attrs != null) {
+            this.attributes.putAll(attrs);
+        }
         this.onlyPassable = onlyPassable;
         updateAttributes();
     }
@@ -53,9 +59,11 @@ public class Attributes {
     public Attributes(Attributes attrs) {
         this(attrs, false);
     }
-    public Attributes(@NotNull Attributes attrs, boolean onlyPassable) {
-        this.node = attrs.getNode();
-        this.attributes = (HashMap<String, String>) attrs.getAttributes();
+    public Attributes(Attributes attrs, boolean onlyPassable) {
+        if (attrs != null) {
+            this.node = attrs.getNode();
+            putAll(attrs);
+        }
         this.onlyPassable = onlyPassable;
         updateAttributes();
     }
